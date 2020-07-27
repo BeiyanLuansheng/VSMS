@@ -5,7 +5,9 @@ import cc.mrbird.febs.common.controller.BaseController;
 import cc.mrbird.febs.common.entity.FebsConstant;
 import cc.mrbird.febs.common.utils.DateUtil;
 import cc.mrbird.febs.common.utils.FebsUtil;
+import cc.mrbird.febs.system.entity.Order;
 import cc.mrbird.febs.system.entity.User;
+import cc.mrbird.febs.system.service.IOrderService;
 import cc.mrbird.febs.system.service.IUserDataPermissionService;
 import cc.mrbird.febs.system.service.IUserService;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +34,8 @@ public class ViewController extends BaseController {
     private final IUserService userService;
     private final ShiroHelper shiroHelper;
     private final IUserDataPermissionService userDataPermissionService;
+    /* 新增数据 */
+    private final IOrderService orderService;
 
     @GetMapping("login")
     @ResponseBody
@@ -114,6 +118,18 @@ public class ViewController extends BaseController {
     @RequiresPermissions("order:create")
     public String systemOrderCreate() {
         return FebsUtil.view("system/order/orderCreate");
+    }
+    /* 订单详情 */
+    @GetMapping(FebsConstant.VIEW_PREFIX + "system/order/detail/{customerName}")
+    @RequiresPermissions("order:view")
+    public String systemOrderDetail(@PathVariable String customerName, Model model) {
+        resolveOrderModel(customerName, model);
+        return FebsUtil.view("system/order/orderDetail");
+    }
+    private void resolveOrderModel(String customerName, Model model) {
+        Order order = orderService.findByName(customerName);
+        //String deptIds = userDataPermissionService.findByUserId(String.valueOf(order.getOrderId()));
+        model.addAttribute("order", order);
     }
 
     /**

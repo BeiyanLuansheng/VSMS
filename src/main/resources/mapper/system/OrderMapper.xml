@@ -7,8 +7,23 @@
         FROM
         ordertable o
         WHERE 1 = 1
+        <if test="order.orderId != null and order.orderId != ''">
+            AND o.order_id = #{order.orderId}
+        </if>
+        <if test="order.salesId != null and order.salesId != ''">
+            AND o.sales_id = #{order.salesId}
+        </if>
         <if test="order.customerName != null and order.customerName != ''">
             AND o.customer_name = #{order.customerName}
+        </if>
+        <if test="order.customerPhone != null and order.customerPhone != ''">
+            AND o.customer_Phone = #{order.customerPhone}
+        </if>
+        <if test="order.vehicleId != null and order.vehicleId != ''">
+            AND o.vehicle_id = #{order.vehicleId}
+        </if>
+        <if test="order.price != null and order.price != ''">
+            AND o.price = #{order.price}
         </if>
         <if test="order.createTimeFrom != null and order.createTimeFrom !=''">
             And o.create_time &gt; #{order.createTimeFrom}
@@ -30,8 +45,23 @@
         FROM
         ordertable o
         WHERE 1 = 1
+        <if test="order.orderId != null and order.orderId != ''">
+            AND o.order_id = #{order.orderId}
+        </if>
+        <if test="order.salesId != null and order.salesId != ''">
+            AND o.sales_id = #{order.salesId}
+        </if>
         <if test="order.customerName != null and order.customerName != ''">
             AND o.customer_name = #{order.customerName}
+        </if>
+        <if test="order.customerPhone != null and order.customerPhone != ''">
+            AND o.customer_Phone = #{order.customerPhone}
+        </if>
+        <if test="order.vehicleId != null and order.vehicleId != ''">
+            AND o.vehicle_id = #{order.vehicleId}
+        </if>
+        <if test="order.price != null and order.price != ''">
+            AND o.price = #{order.price}
         </if>
         <if test="order.createTimeFrom != null and order.createTimeFrom !=''">
             And o.create_time &gt; #{order.createTimeFrom}
