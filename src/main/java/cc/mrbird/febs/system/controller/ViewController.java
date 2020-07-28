@@ -104,8 +104,8 @@ public class ViewController extends BaseController {
     }
 
     /**
-     * Modified function======================================================================================
-     * @return
+     * order function======================================================================================
+     * @author XuJian
      */
     /* 订单管理 */
     @GetMapping(FebsConstant.VIEW_PREFIX + "system/order")
@@ -113,12 +113,14 @@ public class ViewController extends BaseController {
     public String systemOrder() {
         return FebsUtil.view("system/order/order");
     }
+
     /* 新增订单 */
     @GetMapping(FebsConstant.VIEW_PREFIX + "system/order/create")
     @RequiresPermissions("order:create")
     public String systemOrderCreate() {
         return FebsUtil.view("system/order/orderCreate");
     }
+
     /* 订单详情 */
     @GetMapping(FebsConstant.VIEW_PREFIX + "system/order/detail/{orderId}")
     @RequiresPermissions("order:view")
@@ -126,10 +128,7 @@ public class ViewController extends BaseController {
         resolveOrderModel(orderId, model);
         return FebsUtil.view("system/order/orderDetail");
     }
-    private void resolveOrderModel(Long orderId, Model model) {
-        Order order = orderService.findByOrderId(orderId);
-        model.addAttribute("order", order);
-    }
+
     /* 订单审批 */
     @GetMapping(FebsConstant.VIEW_PREFIX + "system/order/approve")
     @RequiresPermissions("order:approve")
@@ -152,6 +151,10 @@ public class ViewController extends BaseController {
         return FebsUtil.view("system/order/orderArchive");
     }
 
+    private void resolveOrderModel(Long orderId, Model model) {
+        Order order = orderService.findByOrderId(orderId);
+        model.addAttribute("order", order);
+    }
     /**
      * ===============================================================================================================
      */

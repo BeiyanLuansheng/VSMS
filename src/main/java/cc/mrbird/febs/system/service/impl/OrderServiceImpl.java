@@ -1,12 +1,9 @@
 package cc.mrbird.febs.system.service.impl;
 
-import cc.mrbird.febs.common.authentication.ShiroRealm;
 import cc.mrbird.febs.common.entity.FebsConstant;
 import cc.mrbird.febs.common.entity.QueryRequest;
-import cc.mrbird.febs.common.utils.Md5Util;
 import cc.mrbird.febs.common.utils.SortUtil;
 import cc.mrbird.febs.system.entity.Order;
-import cc.mrbird.febs.system.entity.User;
 import cc.mrbird.febs.system.mapper.OrderMapper;
 import cc.mrbird.febs.system.service.IOrderService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -31,8 +28,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements IOrderService {
-
-    //private final ShiroRealm shiroRealm;
 
     @Override
     public Order findByOrderId(Long orderId) {
@@ -72,7 +67,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Transactional(rollbackFor = Exception.class)
     public void deleteOrders(String[] orderIds) {
         List<String> list = Arrays.asList(orderIds);
-        // 删除订单
         this.removeByIds(list);
     }
 
