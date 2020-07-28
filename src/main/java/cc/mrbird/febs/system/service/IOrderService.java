@@ -56,4 +56,24 @@ public interface IOrderService extends IService<Order> {
      */
     void updateOrder(Order order);
 
+    /**
+     * 经理审批订单
+     *
+     * @param orderIds 订单 id数组
+     */
+    void managerApproveOrder(String[] orderIds);
+
+    /**
+     * 会计审批订单
+     *
+     * @param orderIds 订单 id数组
+     */
+    void accountingApproveOrder(String[] orderIds);
+
+    /**
+     * 销售审批订单
+     *
+     * @param orderIds 订单 id数组
+     */
+    void salesApproveOrder(String[] orderIds);
 }

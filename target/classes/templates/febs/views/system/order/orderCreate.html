@@ -16,7 +16,7 @@
         overflow: visible !important;
     }
 </style>
-<div class="layui-fluid" id="order-add">
+<div class="layui-fluid" id="order-add" lay-title="新增订单">
     <form class="layui-form" action="" lay-filter="order-add-form">
         <div class="layui-form-item">
             <label class="layui-form-label febs-form-item-require">销售人ID：</label>
@@ -69,71 +69,11 @@
             formSelects = layui.formSelects,
             form = layui.form,
             validate = layui.validate;
-            // treeSelect = layui.treeSelect,
-            // eleTree = layui.eleTree,
-            // $view = $('#user-add'),
-            // _deptTree;
 
         form.verify(validate);
         form.render();
 
         formSelects.render();
-        //renderDeptTree();
-
-        /*treeSelect.render({
-            elem: $view.find('#user-add-dept'),
-            type: 'get',
-            data: ctx + 'dept/select/tree',
-            placeholder: '请选择',
-            search: false
-        });*/
-
-       /* function renderDeptTree() {
-            _deptTree = eleTree.render({
-                elem: $view.find('.data-permission-tree'),
-                url: ctx + 'dept/tree',
-                accordion: true,
-                highlightCurrent: true,
-                showCheckbox: true,
-                checkStrictly: true,
-                renderAfterExpand: false,
-                request: {
-                    name: 'name',
-                    key: "id",
-                    checked: "checked",
-                    data: 'data'
-                },
-                response: {
-                    statusName: "code",
-                    statusCode: 200,
-                    dataName: "data"
-                }
-            });
-            return _deptTree;
-        }*/
-
-        /*formSelects.config('user-add-role', {
-            searchUrl: ctx + 'role',
-            response: {
-                statusCode: 200
-            },
-            beforeSuccess: function (id, url, searchVal, result) {
-                var data = result.data;
-                var tranData = [];
-                for (var i = 0; i < data.length; i++) {
-                    tranData.push({
-                        name: data[i].roleName,
-                        value: data[i].roleId
-                    })
-                }
-                result.data = tranData;
-                return result;
-            },
-            error: function (id, url, searchVal, err) {
-                console.error(err);
-                febs.alert.error('获取角色列表失败');
-            }
-        });*/
 
         form.on('submit(order-add-form-submit)', function (data) {
             febs.post(ctx + 'order', data.field, function () {

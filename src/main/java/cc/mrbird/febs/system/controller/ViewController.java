@@ -128,14 +128,21 @@ public class ViewController extends BaseController {
     }
     private void resolveOrderModel(Long orderId, Model model) {
         Order order = orderService.findByOrderId(orderId);
-        //String deptIds = userDataPermissionService.findByUserId(String.valueOf(order.getOrderId()));
         model.addAttribute("order", order);
     }
-    /* 订单审核 */
+    /* 订单审批 */
     @GetMapping(FebsConstant.VIEW_PREFIX + "system/order/approve")
     @RequiresPermissions("order:approve")
     public String systemOrderApprove() {
         return FebsUtil.view("system/order/orderApprove");
+    }
+
+    /* 修改订单 */
+    @GetMapping(FebsConstant.VIEW_PREFIX + "system/order/update/{orderId}")
+    @RequiresPermissions("order:approve")
+    public String systemOrderUpdate(@PathVariable Long orderId, Model model) {
+        resolveOrderModel(orderId, model);
+        return FebsUtil.view("system/order/orderUpdate");
     }
 
     /**

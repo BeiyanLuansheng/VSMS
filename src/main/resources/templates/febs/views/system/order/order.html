@@ -97,7 +97,7 @@
     <span class="layui-badge febs-bg-{{status.color}}">{{ status.title }}</span>
 </script>
 
-<script type="text/html" id="user-option">
+<script type="text/html" id="order-option">
     <span shiro:lacksPermission="order:view">
         <span class="layui-badge-dot febs-bg-orange"></span> 无权限
     </span>
@@ -153,19 +153,6 @@
                         }
                     });
                 }
-                if (name === 'approve') { //审批
-                    if (!checkStatus.data.length) {
-                        febs.alert.warn('请选择需要删除的用户');
-                    } else {
-                        febs.modal.confirm('删除用户', '确定删除该用户？', function () {
-                            var userIds = [];
-                            layui.each(checkStatus.data, function (key, item) {
-                                userIds.push(item.userId)
-                            });
-                            deleteUsers(userIds.join(','));
-                        });
-                    }
-                }
                 if (name === 'archive') {
                     if (!checkStatus.data.length) {
                         febs.alert.warn('请选择需要重置密码的用户');
@@ -179,22 +166,69 @@
                         });
                     }
                 }
-                // 注释掉导出部分
-                // if (name === 'export') {
-                //     var params = $.extend(getQueryParams(), {field: sortObject.field, order: sortObject.type});
-                //     params.pageSize = $view.find(".layui-laypage-limits option:selected").val();
-                //     params.pageNum = $view.find(".layui-laypage-em").next().html();
-                //     febs.download(ctx + 'user/excel', params, '用户信息表.xlsx');
-                // }
+                if (name === 'approve') { //经理审批
+                    if (!checkStatus.data.length) {
+                        febs.alert.warn('请选择需要审批的订单');
+                    } else {
+                        febs.modal.confirm('审批订单', '确定审批该订单？', function () {
+                            var orderIds = [];
+                            layui.each(checkStatus.data, function (key, item) {
+                                orderIds.push(item.orderId)
+                            });
+                            febs.post(ctx + 'order/approve/' + orderIds.join(','), null, function () {
+                                febs.alert.success('订单审批成功');
+                                $query.click();
+                            });
+                        });
+                    }
+                }
+                else {
+                    if (!checkStatus.data.length) {
+                        febs.alert.warn('请选择需要审批的订单');
+                    } else {
+                        febs.modal.confirm('审批订单', '确定审批该订单？', function () {
+                            var orderIds = [];
+                            layui.each(checkStatus.data, function (key, item) {
+                                orderIds.push(item.orderId)
+                            });
+                            if(name === 'manager') {
+                                febs.post(ctx + 'order/managerApprove/' + orderIds.join(','), null, function () {
+                                    febs.alert.success('订单审批成功');
+                                    $query.click();
+                                });
+                            }
+                            if (name === 'accounting') {
+                                febs.post(ctx + 'order/accountingApprove/' + orderIds.join(','), null, function () {
+                                    febs.alert.success('订单审批成功');
+                                    $query.click();
+                                });
+                            }
+                            if (name === 'sales') {
+                                febs.post(ctx + 'order/salesApprove/' + orderIds.join(','), null, function () {
+                                    febs.alert.success('订单审批成功');
+                                    $query.click();
+                                });
+                            }
+                        });
+                    }
+                }
             },
             options: [{
                 name: 'create',
                 title: '新增订单',
                 perms: 'order:create'
             }, {
-                name: 'approve',
-                title: '审批订单',
-                perms: 'order:approve'
+                name: 'manager',
+                title: '经理审核',
+                perms: 'order:approve:manager'
+            }, {
+                name: 'accounting',
+                title: '会计审核',
+                perms: 'order:approve:accounting'
+            }, {
+                name: 'sales',
+                title: '销售审核',
+                perms: 'order:approve:sales'
             }, {
                 name: 'archive',
                 title: '归档订单',
@@ -224,12 +258,12 @@
                 });
             }
             if (layEvent === 'edit') {
-                febs.modal.open('修改用户', 'system/user/update/' + data.username, {
+                febs.modal.open('修改订单', 'system/order/update/' + data.orderId, {
                     area: $(window).width() <= 750 ? '90%' : '50%',
                     offset: '30px',
                     btn: ['提交', '取消'],
                     yes: function (index, layero) {
-                        $('#user-update').find('#submit').trigger('click');
+                        $('#order-update').find('#submit').trigger('click');
                     },
                     btn2: function () {
                         layer.closeAll();
@@ -278,7 +312,7 @@
                     {field: 'vehicleId', title: '车辆ID'},
                     {field: 'price', title: '价格'},
                     {field: 'status', title: '状态', templet: '#order-status'},
-                    {title: '操作', toolbar: '#user-option', minWidth: 140}
+                    {title: '操作', toolbar: '#order-option', minWidth: 140}
                 ]]
             });
         }
@@ -296,16 +330,11 @@
             return params;
         }
 
-        function deleteUsers(userIds) {
-            var currentUserId = currentUser.userId + '';
-            if (('' + userIds).split(',').indexOf(currentUserId) !== -1) {
-                febs.alert.warn('所选用户包含当前登录用户，无法删除');
-                return;
-            }
-            febs.get(ctx + 'user/delete/' + userIds, null, function () {
-                febs.alert.success('删除用户成功');
+        /*function approveOrders(orderIds) {
+            febs.get(ctx + 'order/orderApprove/' + orderIds, null, function () {
+                febs.alert.success('订单审批成功');
                 $query.click();
             });
-        }
+        }*/
     })
 </script>

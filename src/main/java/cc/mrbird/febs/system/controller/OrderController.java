@@ -6,6 +6,7 @@ import cc.mrbird.febs.common.entity.FebsResponse;
 import cc.mrbird.febs.common.entity.QueryRequest;
 import cc.mrbird.febs.common.exception.FebsException;
 import cc.mrbird.febs.system.entity.Order;
+import cc.mrbird.febs.system.entity.User;
 import cc.mrbird.febs.system.service.IOrderService;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import lombok.RequiredArgsConstructor;
@@ -59,14 +60,42 @@ public class OrderController extends BaseController {
         return new FebsResponse().success();
     }
 
+
     @PostMapping("update")
     @RequiresPermissions("order:approve")
     @ControllerEndpoint(operation = "修改订单", exceptionMessage = "修改订单失败")
-    public FebsResponse updateOrder(@Valid Order order) {
+    public FebsResponse updateUser(@Valid Order order) {
         if (order.getOrderId() == null) {
-            throw new FebsException("订单ID为空");
+            throw new FebsException("订单号为空");
         }
         this.orderService.updateOrder(order);
+        return new FebsResponse().success();
+    }
+
+    @PostMapping("managerApprove/{orderIds}")
+    @RequiresPermissions("order:approve:manager")
+    @ControllerEndpoint(operation = "审批订单", exceptionMessage = "审批订单失败")
+    public FebsResponse managerApproveOrder(@NotBlank(message = "{required}") @PathVariable String orderIds) {
+        String[] ids = orderIds.split(StringPool.COMMA);
+        this.orderService.managerApproveOrder(ids);
+        return new FebsResponse().success();
+    }
+
+    @PostMapping("accountingApprove/{orderIds}")
+    @RequiresPermissions("order:approve:accounting")
+    @ControllerEndpoint(operation = "审批订单", exceptionMessage = "审批订单失败")
+    public FebsResponse accountingApproveOrder(@NotBlank(message = "{required}") @PathVariable String orderIds) {
+        String[] ids = orderIds.split(StringPool.COMMA);
+        this.orderService.accountingApproveOrder(ids);
+        return new FebsResponse().success();
+    }
+
+    @PostMapping("salesApprove/{orderIds}")
+    @RequiresPermissions("order:approve:sales")
+    @ControllerEndpoint(operation = "审批订单", exceptionMessage = "审批订单失败")
+    public FebsResponse salesApproveOrder(@NotBlank(message = "{required}") @PathVariable String orderIds) {
+        String[] ids = orderIds.split(StringPool.COMMA);
+        this.orderService.salesApproveOrder(ids);
         return new FebsResponse().success();
     }
 }

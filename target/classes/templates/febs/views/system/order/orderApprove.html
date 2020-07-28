@@ -1,4 +1,4 @@
-<div class="layui-fluid layui-anim febs-anim" id="febs-order" lay-title="订单管理">
+<div class="layui-fluid layui-anim febs-anim" id="febs-order" lay-title="审批订单">
     <div class="layui-row febs-container">
         <div class="layui-col-md12">
             <div class="layui-card">
@@ -72,7 +72,7 @@
                                     <i class="layui-icon">&#xe79b;</i>
                                 </div>
                                 <div class="layui-btn layui-btn-sm layui-btn-primary table-action action-more"
-                                     shiro:hasAnyPermissions="order:view,order:create,order:approve,order:archive">
+                                     shiro:hasAnyPermissions="order:view">
                                     <i class="layui-icon">&#xe875;</i>
                                 </div>
                             </div>
@@ -97,16 +97,6 @@
     <span class="layui-badge febs-bg-{{status.color}}">{{ status.title }}</span>
 </script>
 
-<script type="text/html" id="order-option">
-    <span shiro:lacksPermission="order:view">
-        <span class="layui-badge-dot febs-bg-orange"></span> 无权限
-    </span>
-    <a lay-event="detail" shiro:hasPermission="order:view"><i
-            class="layui-icon febs-edit-area febs-green">&#xe7a5;</i></a>
-    <a lay-event="edit" shiro:hasPermission="order:approve"><i
-            class="layui-icon febs-edit-area febs-blue">&#xe7a4;</i></a>
-    <a lay-event="del" shiro:hasPermission="order:archive"><i class="layui-icon febs-edit-area febs-red">&#xe7f9;</i></a>
-</script>
 <script data-th-inline="none" type="text/javascript">
     layui.use(['dropdown', 'jquery', 'laydate', 'form', 'table', 'febs', 'treeSelect'], function () {
         var $ = layui.jquery,
@@ -115,10 +105,10 @@
             form = layui.form,
             table = layui.table,
             treeSelect = layui.treeSelect,
-            dropdown = layui.dropdown,
             $view = $('#febs-order'),
             $query = $view.find('#query'),
             $reset = $view.find('#reset'),
+            dropdown = layui.dropdown,
             $searchForm = $view.find('form'),
             sortObject = {field: 'createTime', type: null},
             tableIns,
@@ -126,150 +116,12 @@
             createTimeTo;
 
         form.render();
-
         initTable();
 
         laydate.render({
             elem: '#order-createTime',
             range: true,
             trigger: 'click'
-        });
-
-        dropdown.render({
-            elem: $view.find('.action-more'),
-            click: function (name, elem, event) {
-                var checkStatus = table.checkStatus('orderTable');
-                if (name === 'create') {
-                    febs.modal.open('新增订单', 'system/order/create', {
-                        btn: ['提交', '重置'],
-                        area: $(window).width() <= 750 ? '95%' : '50%',
-                        offset: '30px',
-                        yes: function (index, layero) {
-                            $('#order-add').find('#submit').trigger('click');
-                        },
-                        btn2: function () {
-                            $('#order-add').find('#reset').trigger('click');
-                            return false;
-                        }
-                    });
-                }
-                if (name === 'archive') {
-                    if (!checkStatus.data.length) {
-                        febs.alert.warn('请选择需要重置密码的用户');
-                    } else {
-                        var usernames = [];
-                        layui.each(checkStatus.data, function (key, item) {
-                            usernames.push(item.username)
-                        });
-                        febs.post(ctx + 'user/password/reset/' + usernames.join(','), null, function () {
-                            febs.alert.success('所选用户密码已重置为1234qwer');
-                        });
-                    }
-                }
-                if (name === 'approve') { //经理审批
-                    if (!checkStatus.data.length) {
-                        febs.alert.warn('请选择需要审批的订单');
-                    } else {
-                        febs.modal.confirm('审批订单', '确定审批该订单？', function () {
-                            var orderIds = [];
-                            layui.each(checkStatus.data, function (key, item) {
-                                orderIds.push(item.orderId)
-                            });
-                            febs.post(ctx + 'order/approve/' + orderIds.join(','), null, function () {
-                                febs.alert.success('订单审批成功');
-                                $query.click();
-                            });
-                        });
-                    }
-                }
-                else {
-                    if (!checkStatus.data.length) {
-                        febs.alert.warn('请选择需要审批的订单');
-                    } else {
-                        febs.modal.confirm('审批订单', '确定审批该订单？', function () {
-                            var orderIds = [];
-                            layui.each(checkStatus.data, function (key, item) {
-                                orderIds.push(item.orderId)
-                            });
-                            if(name === 'manager') {
-                                febs.post(ctx + 'order/managerApprove/' + orderIds.join(','), null, function () {
-                                    febs.alert.success('订单审批成功');
-                                    $query.click();
-                                });
-                            }
-                            if (name === 'accounting') {
-                                febs.post(ctx + 'order/accountingApprove/' + orderIds.join(','), null, function () {
-                                    febs.alert.success('订单审批成功');
-                                    $query.click();
-                                });
-                            }
-                            if (name === 'sales') {
-                                febs.post(ctx + 'order/salesApprove/' + orderIds.join(','), null, function () {
-                                    febs.alert.success('订单审批成功');
-                                    $query.click();
-                                });
-                            }
-                        });
-                    }
-                }
-            },
-            options: [{
-                name: 'create',
-                title: '新增订单',
-                perms: 'order:create'
-            }, {
-                name: 'manager',
-                title: '经理审核',
-                perms: 'order:approve:manager'
-            }, {
-                name: 'accounting',
-                title: '会计审核',
-                perms: 'order:approve:accounting'
-            }, {
-                name: 'sales',
-                title: '销售审核',
-                perms: 'order:approve:sales'
-            }, {
-                name: 'archive',
-                title: '归档订单',
-                perms: 'order:archive'
-            }]
-        });
-
-        /*treeSelect.render({
-            elem: $view.find('#dept'),
-            type: 'get',
-            data: ctx + 'dept/select/tree',
-            placeholder: '请选择',
-            search: false
-        });*/
-
-        table.on('tool(orderTable)', function (obj) {
-            var data = obj.data,
-                layEvent = obj.event;
-            if (layEvent === 'detail') {
-                febs.modal.view('订单信息', 'system/order/detail/' + data.orderId, {
-                    area: $(window).width() <= 750 ? '95%' : '660px'
-                });
-            }
-            if (layEvent === 'del') {
-                febs.modal.confirm('删除用户', '确定删除该用户？', function () {
-                    deleteUsers(data.userId);
-                });
-            }
-            if (layEvent === 'edit') {
-                febs.modal.open('修改订单', 'system/order/update/' + data.orderId, {
-                    area: $(window).width() <= 750 ? '90%' : '50%',
-                    offset: '30px',
-                    btn: ['提交', '取消'],
-                    yes: function (index, layero) {
-                        $('#order-update').find('#submit').trigger('click');
-                    },
-                    btn2: function () {
-                        layer.closeAll();
-                    }
-                });
-            }
         });
 
         table.on('sort(orderTable)', function (obj) {
@@ -297,6 +149,54 @@
             tableIns.reload({where: getQueryParams(), page: {curr: 1}, initSort: sortObject});
         });
 
+        dropdown.render({
+            elem: $view.find('.action-more'),
+            click: function (name, elem, event) {
+                var checkStatus = table.checkStatus('orderTable');
+                if (!checkStatus.data.length) {
+                    febs.alert.warn('请选择需要审批的订单');
+                } else {
+                    febs.modal.confirm('审批订单', '确定审批该订单？', function () {
+                        var orderIds = [];
+                        layui.each(checkStatus.data, function (key, item) {
+                            orderIds.push(item.orderId)
+                        });
+                        if(name === 'manager') {
+                            febs.post(ctx + 'order/managerApprove/' + orderIds.join(','), null, function () {
+                                febs.alert.success('订单审批成功');
+                                $query.click();
+                            });
+                        }
+                        if (name === 'accounting') {
+                            febs.post(ctx + 'order/accountingApprove/' + orderIds.join(','), null, function () {
+                                febs.alert.success('订单审批成功');
+                                $query.click();
+                            });
+                        }
+                        if (name === 'sales') {
+                            febs.post(ctx + 'order/salesApprove/' + orderIds.join(','), null, function () {
+                                febs.alert.success('订单审批成功');
+                                $query.click();
+                            });
+                        }
+                    });
+                }
+            },
+            options: [{
+                name: 'manager',
+                title: '经理审核',
+                perms: 'order:approve:manager'
+            }, {
+                name: 'accounting',
+                title: '会计审核',
+                perms: 'order:approve:accounting'
+            }, {
+                name: 'sales',
+                title: '销售审核',
+                perms: 'order:approve:sales'
+            }]
+        });
+
         function initTable() {
             tableIns = febs.table.init({
                 elem: $view.find('table'),
@@ -312,7 +212,6 @@
                     {field: 'vehicleId', title: '车辆ID'},
                     {field: 'price', title: '价格'},
                     {field: 'status', title: '状态', templet: '#order-status'},
-                    {title: '操作', toolbar: '#order-option', minWidth: 140}
                 ]]
             });
         }
@@ -329,12 +228,5 @@
             params.createTimeTo = createTimeTo;
             return params;
         }
-
-        /*function approveOrders(orderIds) {
-            febs.get(ctx + 'order/orderApprove/' + orderIds, null, function () {
-                febs.alert.success('订单审批成功');
-                $query.click();
-            });
-        }*/
     })
 </script>
