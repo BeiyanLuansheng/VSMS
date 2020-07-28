@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.mrbird.febs.system.mapper.VehicleMapper">
+    <sql id="countVehicleDetailSql" >
+        SELECT
+        COUNT(1)
+        FROM
+        vehicletable v
+        WHERE 1 = 1
+        <if test="vehicle.vehicleId != null and vehicle.vehicleId != ''">
+            AND v.vehicle_id = #{vehicle.vehicleId}
+        </if>
+        <if test="vehicle.type != null and vehicle.type != ''">
+            AND v.type = #{vehicle.type}
+        </if>
+        <if test="vehicle.color != null and vehicle.color != ''">
+            AND v.color = #{vehicle.color}
+        </if>
+        <if test="vehicle.deadWeight != null and vehicle.deadWeight != ''">
+            AND v.dead_weight = #{vehicle.deadWeight}
+        </if>
+        <if test="vehicle.lowestPrice != null and vehicle.lowestPrice != ''">
+            AND v.lowest_price = #{vehicle.lowestPrice}
+        </if>
+        <if test="vehicle.maintenanceTimes != null and vehicle.maintenanceTimes != ''">
+            AND v.maintenance_times = #{vehicle.maintenanceTimes}
+        </if>
+        <if test="vehicle.status != null and vehicle.status != ''">
+            AND v.status = #{vehicle.status}
+        </if>
+        <if test="vehicle.manufactureDateFrom != null and vehicle.manufactureDateFrom !=''">
+            And v.manufacture_date &gt; #{vehicle.manufactureDateFrom}
+        </if>
+        <if test="vehicle.manufactureDateTo!= null and vehicle.manufactureDateTo !=''">
+            And v.manufacture_date &lt; #{vehicle.manufactureDateTo}
+        </if>
+    </sql>
+
+    <sql id="findVehicleDetailSql">
+        SELECT
+        v.vehicle_id vehicleId,
+        v.type,
+        v.color,
+        v.dead_weight deadWeight,
+        v.maintenance_times maintenanceTimes,
+        v.lowest_price lowestPrice,
+        v.manufacture_date manufactureDate,
+        v.status
+        FROM
+        vehicletable v
+        WHERE 1 = 1
+        <if test="vehicle.vehicleId != null and vehicle.vehicleId != ''">
+            AND v.vehicle_id = #{vehicle.vehicleId}
+        </if>
+        <if test="vehicle.type != null and vehicle.type != ''">
+            AND v.type = #{vehicle.type}
+        </if>
+        <if test="vehicle.color != null and vehicle.color != ''">
+            AND v.color = #{vehicle.color}
+        </if>
+        <if test="vehicle.deadWeight != null and vehicle.deadWeight != ''">
+            AND v.dead_weight = #{vehicle.deadWeight}
+        </if>
+        <if test="vehicle.lowestPrice != null and vehicle.lowestPrice != ''">
+            AND v.lowest_price = #{vehicle.lowestPrice}
+        </if>
+        <if test="vehicle.maintenanceTimes != null and vehicle.maintenanceTimes != ''">
+            AND v.maintenance_times = #{vehicle.maintenanceTimes}
+        </if>
+        <if test="vehicle.status != null and vehicle.status != ''">
+            AND v.status = #{vehicle.status}
+        </if>
+        <if test="vehicle.manufactureDateFrom != null and vehicle.manufactureDateFrom !=''">
+            And v.manufacture_date &gt; #{vehicle.manufactureDateFrom}
+        </if>
+        <if test="vehicle.manufactureDateTo!= null and vehicle.manufactureDateTo !=''">
+            And v.manufacture_date &lt; #{vehicle.manufactureDateTo}
+        </if>
+    </sql>
+
+    <select id="countVehicleDetail" parameterType="vehicle" resultType="long">
+        <include refid="countVehicleDetailSql"/>
+    </select>
+
+    <select id="findVehicleDetailPage" parameterType="vehicle" resultType="vehicle">
+        <include refid="findVehicleDetailSql"/>
+    </select>
+
+    <select id="findVehicleDetail" parameterType="vehicle" resultType="vehicle">
+        <include refid="findVehicleDetailSql"/>
+    </select>
+
+    <select id="findByVehicleId" parameterType="long" resultType="vehicle">
+        SELECT
+        v.vehicle_id vehicleId,
+        v.type,
+        v.color,
+        v.dead_weight deadWeight,
+        v.maintenance_times maintenanceTimes,
+        v.lowest_price lowestPrice,
+        v.manufacture_date manufactureDate,
+        v.status
+        FROM
+        vehicletable v
+        WHERE  v.vehicle_id = #{vehicleId}
+    </select>
+</mapper>

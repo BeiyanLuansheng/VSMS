@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * @author MrBird
+ * @author XuJian
  */
 public interface OrderMapper extends BaseMapper<Order> {
 

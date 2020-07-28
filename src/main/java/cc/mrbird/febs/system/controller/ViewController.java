@@ -7,9 +7,11 @@ import cc.mrbird.febs.common.utils.DateUtil;
 import cc.mrbird.febs.common.utils.FebsUtil;
 import cc.mrbird.febs.system.entity.Order;
 import cc.mrbird.febs.system.entity.User;
+import cc.mrbird.febs.system.entity.Vehicle;
 import cc.mrbird.febs.system.service.IOrderService;
 import cc.mrbird.febs.system.service.IUserDataPermissionService;
 import cc.mrbird.febs.system.service.IUserService;
+import cc.mrbird.febs.system.service.IVehicleService;
 import lombok.RequiredArgsConstructor;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -36,6 +38,7 @@ public class ViewController extends BaseController {
     private final IUserDataPermissionService userDataPermissionService;
     /* 新增数据 */
     private final IOrderService orderService;
+    private final IVehicleService vehicleService;
 
     @GetMapping("login")
     @ResponseBody
@@ -154,6 +157,51 @@ public class ViewController extends BaseController {
     private void resolveOrderModel(Long orderId, Model model) {
         Order order = orderService.findByOrderId(orderId);
         model.addAttribute("order", order);
+    }
+    /**
+     * vehicle function======================================================================================
+     * @author XuJian
+     */
+    /* 车辆管理 */
+    @GetMapping(FebsConstant.VIEW_PREFIX + "system/vehicle")
+    @RequiresPermissions("vehicle:view")
+    public String systemVehicle() {
+        return FebsUtil.view("system/vehicle/vehicle");
+    }
+
+    /* 新增车辆 */
+    @GetMapping(FebsConstant.VIEW_PREFIX + "system/vehicle/create")
+    @RequiresPermissions("vehicle:create")
+    public String systemVehicleCreate() {
+        return FebsUtil.view("system/vehicle/vehicleCreate");
+    }
+
+    /* 车辆详情 */
+    @GetMapping(FebsConstant.VIEW_PREFIX + "system/vehicle/detail/{vehicleId}")
+    @RequiresPermissions("vehicle:view")
+    public String systemVehicleDetail(@PathVariable Long vehicleId, Model model) {
+        resolveVehicleModel(vehicleId, model);
+        return FebsUtil.view("system/vehicle/vehicleDetail");
+    }
+
+    /* 修改车辆 */
+    @GetMapping(FebsConstant.VIEW_PREFIX + "system/order/update/{vehicleId}")
+    @RequiresPermissions("vehicle:approve")
+    public String systemVehicleUpdate(@PathVariable Long vehicleId, Model model) {
+        resolveOrderModel(vehicleId, model);
+        return FebsUtil.view("system/vehicle/vehicleUpdate");
+    }
+
+    /* 车辆归档 */
+    @GetMapping(FebsConstant.VIEW_PREFIX + "system/vehicle/archive")
+    @RequiresPermissions("vehicle:archive")
+    public String systemVehicleArchive() {
+        return FebsUtil.view("system/vehicle/vehicleArchive");
+    }
+
+    private void resolveVehicleModel(Long vehicleId, Model model) {
+        Vehicle vehicle = this.vehicleService.findByVehicleId(vehicleId);
+        model.addAttribute("vehicle", vehicle);
     }
     /**
      * ===============================================================================================================
