@@ -60,7 +60,7 @@ public class OrderController extends BaseController {
     }
 
     @PostMapping("update")
-    @RequiresPermissions("order:update")
+    @RequiresPermissions("order:approve")
     @ControllerEndpoint(operation = "修改订单", exceptionMessage = "修改订单失败")
     public FebsResponse updateOrder(@Valid Order order) {
         if (order.getOrderId() == null) {

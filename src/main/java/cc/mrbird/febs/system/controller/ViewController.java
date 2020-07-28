@@ -131,6 +131,12 @@ public class ViewController extends BaseController {
         //String deptIds = userDataPermissionService.findByUserId(String.valueOf(order.getOrderId()));
         model.addAttribute("order", order);
     }
+    /* 订单审核 */
+    @GetMapping(FebsConstant.VIEW_PREFIX + "system/order/approve")
+    @RequiresPermissions("order:approve")
+    public String systemOrderApprove() {
+        return FebsUtil.view("system/order/orderApprove");
+    }
 
     /**
      * ===============================================================================================================
