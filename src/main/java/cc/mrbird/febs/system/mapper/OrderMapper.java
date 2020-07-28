@@ -14,12 +14,12 @@ import java.util.List;
 public interface OrderMapper extends BaseMapper<Order> {
 
     /**
-     * 通过客户名查找订单
+     * 通过订单号查找订单
      *
-     * @param customerName 客户名
+     * @param orderId 订单号
      * @return 订单
      */
-    Order findByName(String customerName);
+    Order findByOrderId(Long orderId);
 
     /**
      * 查找订单详细信息

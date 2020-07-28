@@ -120,14 +120,14 @@ public class ViewController extends BaseController {
         return FebsUtil.view("system/order/orderCreate");
     }
     /* 订单详情 */
-    @GetMapping(FebsConstant.VIEW_PREFIX + "system/order/detail/{customerName}")
+    @GetMapping(FebsConstant.VIEW_PREFIX + "system/order/detail/{orderId}")
     @RequiresPermissions("order:view")
-    public String systemOrderDetail(@PathVariable String customerName, Model model) {
-        resolveOrderModel(customerName, model);
+    public String systemOrderDetail(@PathVariable Long orderId, Model model) {
+        resolveOrderModel(orderId, model);
         return FebsUtil.view("system/order/orderDetail");
     }
-    private void resolveOrderModel(String customerName, Model model) {
-        Order order = orderService.findByName(customerName);
+    private void resolveOrderModel(Long orderId, Model model) {
+        Order order = orderService.findByOrderId(orderId);
         //String deptIds = userDataPermissionService.findByUserId(String.valueOf(order.getOrderId()));
         model.addAttribute("order", order);
     }

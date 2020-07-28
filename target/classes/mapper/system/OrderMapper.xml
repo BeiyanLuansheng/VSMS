@@ -25,6 +25,9 @@
         <if test="order.price != null and order.price != ''">
             AND o.price = #{order.price}
         </if>
+        <if test="order.status != null and order.status != ''">
+            AND o.status = #{order.status}
+        </if>
         <if test="order.createTimeFrom != null and order.createTimeFrom !=''">
             And o.create_time &gt; #{order.createTimeFrom}
         </if>
@@ -41,7 +44,8 @@
         o.customer_name customerName,
         o.customer_phone customerPhone,
         o.vehicle_id vehicleId,
-        o.price
+        o.price,
+        o.status
         FROM
         ordertable o
         WHERE 1 = 1
@@ -63,6 +67,9 @@
         <if test="order.price != null and order.price != ''">
             AND o.price = #{order.price}
         </if>
+        <if test="order.status != null and order.status != ''">
+            AND o.status = #{order.status}
+        </if>
         <if test="order.createTimeFrom != null and order.createTimeFrom !=''">
             And o.create_time &gt; #{order.createTimeFrom}
         </if>
@@ -83,7 +90,7 @@
         <include refid="findOrderDetailSql"/>
     </select>
 
-    <select id="findByName" parameterType="string" resultType="order">
+    <select id="findByOrderId" parameterType="long" resultType="order">
         SELECT
         o.order_id orderId,
         o.create_time createTime,
@@ -91,9 +98,10 @@
         o.customer_name customerName,
         o.customer_phone customerPhone,
         o.vehicle_id vehicleId,
-        o.price
+        o.price,
+        o.status
         FROM
         ordertable o
-        WHERE  o.customer_name = #{customerName}
+        WHERE  o.order_id = #{orderId}
     </select>
 </mapper>

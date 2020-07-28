@@ -32,8 +32,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     //private final ShiroRealm shiroRealm;
 
     @Override
-    public Order findByName(String customerName) {
-        return this.baseMapper.findByName(customerName);
+    public Order findByOrderId(Long orderId) {
+        return this.baseMapper.findByOrderId(orderId);
     }
 
     @Override
@@ -51,9 +51,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     }
 
     @Override
-    public Order findOrderDetailList(String customerName) {
+    public Order findOrderDetailList(Long orderId) {
         Order param = new Order();
-        param.setCustomerName(customerName);
+        param.setOrderId(orderId);
         List<Order> orders = this.baseMapper.findOrderDetail(param);
         return CollectionUtils.isNotEmpty(orders) ? orders.get(0) : null;
     }

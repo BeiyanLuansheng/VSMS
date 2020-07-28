@@ -30,9 +30,9 @@ public class OrderController extends BaseController {
 
     private final IOrderService orderService;
 
-    @GetMapping("{customerName}")
-    public Order getOrder(@NotBlank(message = "{required}") @PathVariable String customerName) {
-        return this.orderService.findOrderDetailList(customerName);
+    @GetMapping("{orderId}")
+    public Order getOrder(@NotBlank(message = "{required}") @PathVariable Long orderId) {
+        return this.orderService.findOrderDetailList(orderId);
     }
 
     @GetMapping("list")

@@ -61,6 +61,12 @@ public class Order implements Serializable {
     @TableField("CREATE_TIME")
     private Date createTime;
 
+    /**
+     * 订单状态
+     */
+    @TableField("STATUS")
+    private String status;
+
     /* 表示时间范围，在数据库的表中不存在这两项 */
     @TableField(exist = false)
     private String createTimeFrom;
