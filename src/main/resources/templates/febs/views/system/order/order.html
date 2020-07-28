@@ -105,7 +105,8 @@
             class="layui-icon febs-edit-area febs-green">&#xe7a5;</i></a>
     <a lay-event="edit" shiro:hasPermission="order:approve"><i
             class="layui-icon febs-edit-area febs-blue">&#xe7a4;</i></a>
-    <a lay-event="del" shiro:hasPermission="order:archive"><i class="layui-icon febs-edit-area febs-red">&#xe7f9;</i></a>
+    <a lay-event="del" shiro:hasPermission="order:archive"><i
+            class="layui-icon febs-edit-area febs-red">&#xe7f9;</i></a>
 </script>
 <script data-th-inline="none" type="text/javascript">
     layui.use(['dropdown', 'jquery', 'laydate', 'form', 'table', 'febs', 'treeSelect'], function () {
@@ -154,29 +155,17 @@
                     });
                 }
                 if (name === 'archive') {
+                    var checkStatus = table.checkStatus('orderTable');
                     if (!checkStatus.data.length) {
-                        febs.alert.warn('请选择需要重置密码的用户');
+                        febs.alert.warn('请选择需要归档的订单');
                     } else {
-                        var usernames = [];
-                        layui.each(checkStatus.data, function (key, item) {
-                            usernames.push(item.username)
-                        });
-                        febs.post(ctx + 'user/password/reset/' + usernames.join(','), null, function () {
-                            febs.alert.success('所选用户密码已重置为1234qwer');
-                        });
-                    }
-                }
-                if (name === 'approve') { //经理审批
-                    if (!checkStatus.data.length) {
-                        febs.alert.warn('请选择需要审批的订单');
-                    } else {
-                        febs.modal.confirm('审批订单', '确定审批该订单？', function () {
+                        febs.modal.confirm('归档订单', '确定归档选中订单？', function () {
                             var orderIds = [];
                             layui.each(checkStatus.data, function (key, item) {
                                 orderIds.push(item.orderId)
                             });
-                            febs.post(ctx + 'order/approve/' + orderIds.join(','), null, function () {
-                                febs.alert.success('订单审批成功');
+                            febs.post(ctx + 'order/archive/' + orderIds.join(','), null, function () {
+                                febs.alert.success('订单归档成功');
                                 $query.click();
                             });
                         });
@@ -236,14 +225,6 @@
             }]
         });
 
-        /*treeSelect.render({
-            elem: $view.find('#dept'),
-            type: 'get',
-            data: ctx + 'dept/select/tree',
-            placeholder: '请选择',
-            search: false
-        });*/
-
         table.on('tool(orderTable)', function (obj) {
             var data = obj.data,
                 layEvent = obj.event;
@@ -253,7 +234,7 @@
                 });
             }
             if (layEvent === 'del') {
-                febs.modal.confirm('删除用户', '确定删除该用户？', function () {
+                febs.modal.confirm('删除订单', '确定删除该订单？', function () {
                     deleteUsers(data.userId);
                 });
             }
@@ -329,12 +310,5 @@
             params.createTimeTo = createTimeTo;
             return params;
         }
-
-        /*function approveOrders(orderIds) {
-            febs.get(ctx + 'order/orderApprove/' + orderIds, null, function () {
-                febs.alert.success('订单审批成功');
-                $query.click();
-            });
-        }*/
     })
 </script>

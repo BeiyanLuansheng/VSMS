@@ -145,6 +145,13 @@ public class ViewController extends BaseController {
         return FebsUtil.view("system/order/orderUpdate");
     }
 
+    /* 订单归档 */
+    @GetMapping(FebsConstant.VIEW_PREFIX + "system/order/archive")
+    @RequiresPermissions("order:archive")
+    public String systemOrderArchive() {
+        return FebsUtil.view("system/order/orderArchive");
+    }
+
     /**
      * ===============================================================================================================
      */

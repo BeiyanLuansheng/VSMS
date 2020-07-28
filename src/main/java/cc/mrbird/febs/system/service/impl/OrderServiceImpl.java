@@ -84,46 +84,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void managerApproveOrder(String[] orderIds){
-        Long[] ids = new Long[orderIds.length];
-        for(int i=0; i<orderIds.length; i++){
-            Long id = Long.valueOf(orderIds[i]);
-            if (findByOrderId(id).getStatus().equals("待审核"))
-                ids[i] = id;
-        }
-        this.statusChange("已审核", ids);
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void accountingApproveOrder(String[] orderIds){
-        Long[] ids = new Long[orderIds.length];
-        for(int i=0; i<orderIds.length; i++){
-            Long id = Long.valueOf(orderIds[i]);
-            if (findByOrderId(id).getStatus().equals("已审核"))
-                ids[i] = id;
-        }
-        this.statusChange("已付款", ids);
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void salesApproveOrder(String[] orderIds){
-        Long[] ids = new Long[orderIds.length];
-        for(int i=0; i<orderIds.length; i++){
-            Long id = Long.valueOf(orderIds[i]);
-            if (findByOrderId(id).getStatus().equals("已付款"))
-                ids[i] = id;
-        }
-        this.statusChange("已交付", ids);
-    }
-
-    /**
-     * 更改订单状态
-     * @param status
-     * @param orderIds
-     */
-    private void statusChange(String status, Long[] orderIds){
+    public void statusChange(String status, Long[] orderIds){
         Arrays.stream(orderIds).forEach(orderId -> {
             Order order = new Order();
             order.setStatus(status);

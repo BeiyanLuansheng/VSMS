@@ -74,28 +74,65 @@ public class OrderController extends BaseController {
 
     @PostMapping("managerApprove/{orderIds}")
     @RequiresPermissions("order:approve:manager")
-    @ControllerEndpoint(operation = "审批订单", exceptionMessage = "审批订单失败")
+    @ControllerEndpoint(operation = "经理审批订单", exceptionMessage = "审批订单失败")
     public FebsResponse managerApproveOrder(@NotBlank(message = "{required}") @PathVariable String orderIds) {
-        String[] ids = orderIds.split(StringPool.COMMA);
-        this.orderService.managerApproveOrder(ids);
+        String[] idsArray = orderIds.split(StringPool.COMMA);
+        Long[] ids = new Long[idsArray.length];
+        for(int i=0; i<idsArray.length; i++){
+            Long id = Long.valueOf(idsArray[i]);
+            if (this.orderService.findByOrderId(id).getStatus().equals("待审核"))
+                ids[i] = id;
+            else throw new FebsException("选中订单含有非待审核状态订单");
+        }
+        this.orderService.statusChange("已审核", ids);
         return new FebsResponse().success();
     }
 
     @PostMapping("accountingApprove/{orderIds}")
     @RequiresPermissions("order:approve:accounting")
-    @ControllerEndpoint(operation = "审批订单", exceptionMessage = "审批订单失败")
+    @ControllerEndpoint(operation = "财务审批订单", exceptionMessage = "审批订单失败")
     public FebsResponse accountingApproveOrder(@NotBlank(message = "{required}") @PathVariable String orderIds) {
-        String[] ids = orderIds.split(StringPool.COMMA);
-        this.orderService.accountingApproveOrder(ids);
+        String[] idsArray = orderIds.split(StringPool.COMMA);
+        Long[] ids = new Long[idsArray.length];
+        for(int i=0; i<idsArray.length; i++){
+            Long id = Long.valueOf(idsArray[i]);
+            if (this.orderService.findByOrderId(id).getStatus().equals("已审核"))
+                ids[i] = id;
+            else throw new FebsException("选中订单含有非已审核状态订单");
+        }
+        this.orderService.statusChange("已付款", ids);
         return new FebsResponse().success();
     }
 
     @PostMapping("salesApprove/{orderIds}")
     @RequiresPermissions("order:approve:sales")
-    @ControllerEndpoint(operation = "审批订单", exceptionMessage = "审批订单失败")
+    @ControllerEndpoint(operation = "销售审批订单", exceptionMessage = "审批订单失败")
     public FebsResponse salesApproveOrder(@NotBlank(message = "{required}") @PathVariable String orderIds) {
-        String[] ids = orderIds.split(StringPool.COMMA);
-        this.orderService.salesApproveOrder(ids);
+        String[] idsArray = orderIds.split(StringPool.COMMA);
+        Long[] ids = new Long[idsArray.length];
+        for(int i=0; i<idsArray.length; i++){
+            Long id = Long.valueOf(idsArray[i]);
+            if (this.orderService.findByOrderId(id).getStatus().equals("已付款"))
+                ids[i] = id;
+            else throw new FebsException("选中订单含有非已付款状态订单");
+        }
+        this.orderService.statusChange("已交付", ids);
+        return new FebsResponse().success();
+    }
+
+    @PostMapping("archive/{orderIds}")
+    @RequiresPermissions("order:archive")
+    @ControllerEndpoint(operation = "归档订单", exceptionMessage = "归档订单失败")
+    public FebsResponse archiveOrder(@NotBlank(message = "{required}") @PathVariable String orderIds) {
+        String[] idsArray = orderIds.split(StringPool.COMMA);
+        Long[] ids = new Long[idsArray.length];
+        for(int i=0; i<idsArray.length; i++){
+            Long id = Long.valueOf(idsArray[i]);
+            if (this.orderService.findByOrderId(id).getStatus().equals("已交付"))
+                ids[i] = id;
+            else throw new FebsException("选中订单含有非已付款状态订单");
+        }
+        this.orderService.statusChange("已归档", ids);
         return new FebsResponse().success();
     }
 }
