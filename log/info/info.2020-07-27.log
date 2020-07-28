@@ -3688,3 +3688,93 @@ SELECT o.order_id orderId, o.create_time createTime, o.sales_id salesId, o.custo
 SELECT COUNT(1) FROM ordertable o WHERE 1 = 1 AND o.price = 200000;
 2020-07-27 17:18:53 INFO  http-nio-8080-exec-3 p6spy 2020-07-27 17:18:53 | 耗时 0 ms | SQL 语句：
 SELECT o.order_id orderId, o.create_time createTime, o.sales_id salesId, o.customer_name customerName, o.customer_phone customerPhone, o.vehicle_id vehicleId, o.price FROM ordertable o WHERE 1 = 1 AND o.price = 200000 ORDER BY orderId ASC LIMIT 0,10;
+2020-07-27 17:29:05 INFO  http-nio-8080-exec-6 p6spy 2020-07-27 17:29:05 | 耗时 3 ms | SQL 语句：
+SELECT COUNT(1) FROM ordertable o WHERE 1 = 1;
+2020-07-27 17:29:05 INFO  http-nio-8080-exec-6 p6spy 2020-07-27 17:29:05 | 耗时 0 ms | SQL 语句：
+SELECT o.order_id orderId, o.create_time createTime, o.sales_id salesId, o.customer_name customerName, o.customer_phone customerPhone, o.vehicle_id vehicleId, o.price FROM ordertable o WHERE 1 = 1 ORDER BY orderId ASC LIMIT 0,10;
+2020-07-27 18:17:38 INFO  SessionValidationThread-1 org.apache.shiro.session.mgt.AbstractValidatingSessionManager Validating all active sessions...
+2020-07-27 18:17:38 INFO  SessionValidationThread-1 org.apache.shiro.session.mgt.AbstractValidatingSessionManager Finished session validation.  No sessions were stopped.
+2020-07-27 19:17:38 INFO  SessionValidationThread-1 org.apache.shiro.session.mgt.AbstractValidatingSessionManager Validating all active sessions...
+2020-07-27 19:17:38 INFO  SessionValidationThread-1 org.apache.shiro.session.mgt.AbstractValidatingSessionManager Finished session validation.  No sessions were stopped.
+2020-07-27 20:17:38 INFO  SessionValidationThread-1 org.apache.shiro.session.mgt.AbstractValidatingSessionManager Validating all active sessions...
+2020-07-27 20:17:38 INFO  SessionValidationThread-1 org.apache.shiro.session.mgt.AbstractValidatingSessionManager Finished session validation.  No sessions were stopped.
+2020-07-27 21:17:38 INFO  SessionValidationThread-1 org.apache.shiro.session.mgt.AbstractValidatingSessionManager Validating all active sessions...
+2020-07-27 21:17:38 INFO  SessionValidationThread-1 org.apache.shiro.session.mgt.AbstractValidatingSessionManager Finished session validation.  No sessions were stopped.
+2020-07-27 22:10:56 INFO  http-nio-8080-exec-2 cc.mrbird.febs.common.aspect.LimitAspect IP:192.168.137.1 第 1 次访问key为 [limit_get_captcha192.168.137.1]，描述为 [获取验证码] 的接口
+2020-07-27 22:11:18 INFO  http-nio-8080-exec-1 cc.mrbird.febs.common.aspect.LimitAspect IP:192.168.137.1 第 1 次访问key为 [limit_login192.168.137.1]，描述为 [登录接口] 的接口
+2020-07-27 22:11:18 INFO  http-nio-8080-exec-1 p6spy 2020-07-27 22:11:18 | 耗时 13 ms | SQL 语句：
+SELECT u.user_id userId, u.username, u.email, u.mobile, u.password, u.status, u.create_time createTime, u.ssex sex, u.dept_id deptId, u.last_login_time lastLoginTime, u.modify_time modifyTime, u.description, u.avatar, u.theme, u.is_tab isTab, d.dept_name deptName, GROUP_CONCAT(r.role_id) roleId, GROUP_CONCAT(r.ROLE_NAME) roleName FROM t_user u LEFT JOIN t_dept d ON (u.dept_id = d.dept_id) LEFT JOIN t_user_role ur ON (u.user_id = ur.user_id) LEFT JOIN t_role r ON r.role_id = ur.role_id WHERE u.username = 'mrbird' GROUP BY u.username, u.user_id, u.email, u.mobile, u.password, u.status, u.create_time, u.ssex, u.dept_id, u.last_login_time, u.modify_time, u.description, u.avatar, u.theme, u.is_tab;
+2020-07-27 22:11:18 INFO  http-nio-8080-exec-1 p6spy 2020-07-27 22:11:18 | 耗时 3 ms | SQL 语句：
+SELECT USER_ID, dept_id FROM t_user_data_permission WHERE (USER_ID = '1');
+2020-07-27 22:11:18 INFO  http-nio-8080-exec-1 p6spy 2020-07-27 22:11:18 | 耗时 4 ms | SQL 语句：
+INSERT INTO t_login_log (USERNAME, LOGIN_TIME, LOCATION, IP, `SYSTEM`, BROWSER) VALUES ('mrbird', '2020-07-27T22:11:18.732+0800', '内网IP|0|0|内网IP|内网IP', '192.168.137.1', 'Windows 10', 'Chrome 83');
+2020-07-27 22:11:18 INFO  http-nio-8080-exec-3 p6spy 2020-07-27 22:11:18 | 耗时 0 ms | SQL 语句：
+SELECT r.* FROM t_role r LEFT JOIN t_user_role ur ON (r.role_id = ur.role_id) LEFT JOIN t_user u ON (u.user_id = ur.user_id) WHERE u.username = 'MrBird';
+2020-07-27 22:11:18 INFO  http-nio-8080-exec-3 p6spy 2020-07-27 22:11:18 | 耗时 6 ms | SQL 语句：
+SELECT m.perms FROM t_role r LEFT JOIN t_user_role ur ON (r.role_id = ur.role_id) LEFT JOIN t_user u ON (u.user_id = ur.user_id) LEFT JOIN t_role_menu rm ON (rm.role_id = r.role_id) LEFT JOIN t_menu m ON (m.menu_id = rm.menu_id) WHERE u.username = 'MrBird' AND m.perms IS NOT NULL AND m.perms <> '';
+2020-07-27 22:11:18 INFO  http-nio-8080-exec-3 p6spy 2020-07-27 22:11:18 | 耗时 1 ms | SQL 语句：
+SELECT u.user_id userId, u.username, u.email, u.mobile, u.password, u.status, u.create_time createTime, u.ssex sex, u.dept_id deptId, u.last_login_time lastLoginTime, u.modify_time modifyTime, u.description, u.avatar, u.theme, u.is_tab isTab, d.dept_name deptName, GROUP_CONCAT(r.role_id) roleId, GROUP_CONCAT(r.ROLE_NAME) roleName FROM t_user u LEFT JOIN t_dept d ON (u.dept_id = d.dept_id) LEFT JOIN t_user_role ur ON (u.user_id = ur.user_id) LEFT JOIN t_role r ON r.role_id = ur.role_id WHERE u.username = 'MrBird' GROUP BY u.username, u.user_id, u.email, u.mobile, u.password, u.status, u.create_time, u.ssex, u.dept_id, u.last_login_time, u.modify_time, u.description, u.avatar, u.theme, u.is_tab;
+2020-07-27 22:11:20 INFO  http-nio-8080-exec-6 p6spy 2020-07-27 22:11:20 | 耗时 2 ms | SQL 语句：
+SELECT m.* FROM t_menu m WHERE m.type <> 1 AND m.MENU_ID IN (SELECT DISTINCT rm.menu_id FROM t_role_menu rm LEFT JOIN t_role r ON (rm.role_id = r.role_id) LEFT JOIN t_user_role ur ON (ur.role_id = r.role_id) LEFT JOIN t_user u ON (u.user_id = ur.user_id) WHERE u.username = 'MrBird') ORDER BY m.order_num;
+2020-07-27 22:11:20 INFO  http-nio-8080-exec-9 p6spy 2020-07-27 22:11:20 | 耗时 0 ms | SQL 语句：
+SELECT count(1) FROM t_login_log;
+2020-07-27 22:11:20 INFO  http-nio-8080-exec-9 p6spy 2020-07-27 22:11:20 | 耗时 2 ms | SQL 语句：
+SELECT count(1) FROM t_login_log WHERE login_time BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 1 DAY);
+2020-07-27 22:11:20 INFO  http-nio-8080-exec-9 p6spy 2020-07-27 22:11:20 | 耗时 0 ms | SQL 语句：
+SELECT count(DISTINCT (ip)) FROM t_login_log WHERE login_time BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 1 DAY);
+2020-07-27 22:11:20 INFO  http-nio-8080-exec-9 p6spy 2020-07-27 22:11:20 | 耗时 1 ms | SQL 语句：
+SELECT date_format(l.login_time, '%m-%d') days, count(1) count FROM (SELECT * FROM t_login_log WHERE date_sub(curdate(), INTERVAL 10 day) <= date(login_time)) AS l WHERE 1 = 1 GROUP BY days;
+2020-07-27 22:11:20 INFO  http-nio-8080-exec-9 p6spy 2020-07-27 22:11:20 | 耗时 1 ms | SQL 语句：
+SELECT date_format(l.login_time, '%m-%d') days, count(1) count FROM (SELECT * FROM t_login_log WHERE date_sub(curdate(), INTERVAL 10 day) <= date(login_time)) AS l WHERE 1 = 1 AND l.username = 'MrBird' GROUP BY days;
+2020-07-27 22:11:20 INFO  Febs-Async-Thread2 p6spy 2020-07-27 22:11:20 | 耗时 2 ms | SQL 语句：
+UPDATE t_user SET LAST_LOGIN_TIME = '2020-07-27T22:11:20.183+0800' WHERE (USERNAME = 'MrBird');
+2020-07-27 22:11:28 INFO  http-nio-8080-exec-8 p6spy 2020-07-27 22:11:28 | 耗时 0 ms | SQL 语句：
+SELECT r.* FROM t_role r LEFT JOIN t_user_role ur ON (r.role_id = ur.role_id) LEFT JOIN t_user u ON (u.user_id = ur.user_id) WHERE u.username = 'MrBird';
+2020-07-27 22:11:28 INFO  http-nio-8080-exec-8 p6spy 2020-07-27 22:11:28 | 耗时 1 ms | SQL 语句：
+SELECT m.perms FROM t_role r LEFT JOIN t_user_role ur ON (r.role_id = ur.role_id) LEFT JOIN t_user u ON (u.user_id = ur.user_id) LEFT JOIN t_role_menu rm ON (rm.role_id = r.role_id) LEFT JOIN t_menu m ON (m.menu_id = rm.menu_id) WHERE u.username = 'MrBird' AND m.perms IS NOT NULL AND m.perms <> '';
+2020-07-27 22:11:28 INFO  http-nio-8080-exec-2 p6spy 2020-07-27 22:11:28 | 耗时 8 ms | SQL 语句：
+SELECT COUNT(1) FROM ordertable o WHERE 1 = 1;
+2020-07-27 22:11:28 INFO  http-nio-8080-exec-2 p6spy 2020-07-27 22:11:28 | 耗时 1 ms | SQL 语句：
+SELECT o.order_id orderId, o.create_time createTime, o.sales_id salesId, o.customer_name customerName, o.customer_phone customerPhone, o.vehicle_id vehicleId, o.price FROM ordertable o WHERE 1 = 1 ORDER BY orderId ASC LIMIT 0,10;
+2020-07-27 22:11:53 INFO  http-nio-8080-exec-1 p6spy 2020-07-27 22:11:53 | 耗时 0 ms | SQL 语句：
+SELECT u.user_id userId, u.username, u.email, u.mobile, u.password, u.status, u.create_time createTime, u.ssex sex, u.dept_id deptId, u.last_login_time lastLoginTime, u.modify_time modifyTime, u.description, u.avatar, u.theme, u.is_tab isTab, d.dept_name deptName, GROUP_CONCAT(r.role_id) roleId, GROUP_CONCAT(r.ROLE_NAME) roleName FROM t_user u LEFT JOIN t_dept d ON (u.dept_id = d.dept_id) LEFT JOIN t_user_role ur ON (u.user_id = ur.user_id) LEFT JOIN t_role r ON r.role_id = ur.role_id WHERE u.username = 'undefined' GROUP BY u.username, u.user_id, u.email, u.mobile, u.password, u.status, u.create_time, u.ssex, u.dept_id, u.last_login_time, u.modify_time, u.description, u.avatar, u.theme, u.is_tab;
+2020-07-27 22:12:14 INFO  http-nio-8080-exec-5 p6spy 2020-07-27 22:12:14 | 耗时 9 ms | SQL 语句：
+SELECT COUNT(1) FROM t_user u WHERE 1 = 1;
+2020-07-27 22:12:14 INFO  http-nio-8080-exec-5 p6spy 2020-07-27 22:12:14 | 耗时 2 ms | SQL 语句：
+SELECT u.user_id userId, u.username, u.email, u.mobile, u.status, u.create_time createTime, u.ssex sex, u.dept_id deptId, u.last_login_time lastLoginTime, u.modify_time modifyTime, u.description, u.avatar, d.dept_name deptName, GROUP_CONCAT(r.role_id) roleId, GROUP_CONCAT(r.ROLE_NAME) roleName FROM t_user u LEFT JOIN t_dept d ON (u.dept_id = d.dept_id) LEFT JOIN t_user_role ur ON (u.user_id = ur.user_id) LEFT JOIN t_role r ON r.role_id = ur.role_id WHERE 1 = 1 GROUP BY u.username, u.user_id, u.email, u.mobile, u.status, u.create_time, u.ssex, u.dept_id, u.last_login_time, u.modify_time, u.description, u.avatar ORDER BY userId ASC LIMIT 0,10;
+2020-07-27 22:12:14 INFO  http-nio-8080-exec-6 p6spy 2020-07-27 22:12:14 | 耗时 2 ms | SQL 语句：
+SELECT DEPT_ID, PARENT_ID, DEPT_NAME, ORDER_NUM, CREATE_TIME, MODIFY_TIME FROM t_dept;
+2020-07-27 22:12:42 INFO  http-nio-8080-exec-8 p6spy 2020-07-27 22:12:42 | 耗时 10 ms | SQL 语句：
+SELECT u.user_id userId, u.username, u.email, u.mobile, u.password, u.status, u.create_time createTime, u.ssex sex, u.dept_id deptId, u.last_login_time lastLoginTime, u.modify_time modifyTime, u.description, u.avatar, u.theme, u.is_tab isTab, d.dept_name deptName, GROUP_CONCAT(r.role_id) roleId, GROUP_CONCAT(r.ROLE_NAME) roleName FROM t_user u LEFT JOIN t_dept d ON (u.dept_id = d.dept_id) LEFT JOIN t_user_role ur ON (u.user_id = ur.user_id) LEFT JOIN t_role r ON r.role_id = ur.role_id WHERE u.username = 'undefined' GROUP BY u.username, u.user_id, u.email, u.mobile, u.password, u.status, u.create_time, u.ssex, u.dept_id, u.last_login_time, u.modify_time, u.description, u.avatar, u.theme, u.is_tab;
+2020-07-27 22:17:38 INFO  SessionValidationThread-1 org.apache.shiro.session.mgt.AbstractValidatingSessionManager Validating all active sessions...
+2020-07-27 22:17:38 INFO  SessionValidationThread-1 org.apache.shiro.session.mgt.AbstractValidatingSessionManager Finished session validation.  No sessions were stopped.
+2020-07-27 23:00:39 INFO  http-nio-8080-exec-3 p6spy 2020-07-27 23:00:39 | 耗时 7 ms | SQL 语句：
+SELECT r.* FROM t_role r LEFT JOIN t_user_role ur ON (r.role_id = ur.role_id) LEFT JOIN t_user u ON (u.user_id = ur.user_id) WHERE u.username = 'MrBird';
+2020-07-27 23:00:39 INFO  http-nio-8080-exec-3 p6spy 2020-07-27 23:00:39 | 耗时 5 ms | SQL 语句：
+SELECT m.perms FROM t_role r LEFT JOIN t_user_role ur ON (r.role_id = ur.role_id) LEFT JOIN t_user u ON (u.user_id = ur.user_id) LEFT JOIN t_role_menu rm ON (rm.role_id = r.role_id) LEFT JOIN t_menu m ON (m.menu_id = rm.menu_id) WHERE u.username = 'MrBird' AND m.perms IS NOT NULL AND m.perms <> '';
+2020-07-27 23:00:39 INFO  http-nio-8080-exec-4 p6spy 2020-07-27 23:00:39 | 耗时 3 ms | SQL 语句：
+SELECT COUNT(1) FROM t_role r WHERE 1 = 1;
+2020-07-27 23:00:39 INFO  http-nio-8080-exec-4 p6spy 2020-07-27 23:00:39 | 耗时 2 ms | SQL 语句：
+SELECT r.role_id roleId, r.role_name roleName, r.remark, r.create_time createTime, r.modify_time modifyTime, GROUP_CONCAT(rm.menu_id) menuIds FROM t_role r LEFT JOIN t_role_menu rm ON (r.role_id = rm.role_id) WHERE 1 = 1 GROUP BY r.role_id ORDER BY createTime DESC LIMIT 0,10;
+2020-07-27 23:00:39 INFO  http-nio-8080-exec-5 p6spy 2020-07-27 23:00:39 | 耗时 3 ms | SQL 语句：
+SELECT MENU_ID, PARENT_ID, MENU_NAME, URL, PERMS, ICON, TYPE, ORDER_NUM, CREATE_TIME, MODIFY_TIME FROM t_menu ORDER BY ORDER_NUM ASC;
+2020-07-27 23:02:10 INFO  http-nio-8080-exec-9 p6spy 2020-07-27 23:02:10 | 耗时 2 ms | SQL 语句：
+SELECT COUNT(1) FROM t_user u WHERE 1 = 1;
+2020-07-27 23:02:10 INFO  http-nio-8080-exec-9 p6spy 2020-07-27 23:02:10 | 耗时 6 ms | SQL 语句：
+SELECT u.user_id userId, u.username, u.email, u.mobile, u.status, u.create_time createTime, u.ssex sex, u.dept_id deptId, u.last_login_time lastLoginTime, u.modify_time modifyTime, u.description, u.avatar, d.dept_name deptName, GROUP_CONCAT(r.role_id) roleId, GROUP_CONCAT(r.ROLE_NAME) roleName FROM t_user u LEFT JOIN t_dept d ON (u.dept_id = d.dept_id) LEFT JOIN t_user_role ur ON (u.user_id = ur.user_id) LEFT JOIN t_role r ON r.role_id = ur.role_id WHERE 1 = 1 GROUP BY u.username, u.user_id, u.email, u.mobile, u.status, u.create_time, u.ssex, u.dept_id, u.last_login_time, u.modify_time, u.description, u.avatar ORDER BY createTime ASC LIMIT 0,10;
+2020-07-27 23:02:11 INFO  http-nio-8080-exec-8 p6spy 2020-07-27 23:02:11 | 耗时 2 ms | SQL 语句：
+SELECT COUNT(1) FROM t_user u WHERE 1 = 1;
+2020-07-27 23:02:11 INFO  http-nio-8080-exec-8 p6spy 2020-07-27 23:02:11 | 耗时 1 ms | SQL 语句：
+SELECT u.user_id userId, u.username, u.email, u.mobile, u.status, u.create_time createTime, u.ssex sex, u.dept_id deptId, u.last_login_time lastLoginTime, u.modify_time modifyTime, u.description, u.avatar, d.dept_name deptName, GROUP_CONCAT(r.role_id) roleId, GROUP_CONCAT(r.ROLE_NAME) roleName FROM t_user u LEFT JOIN t_dept d ON (u.dept_id = d.dept_id) LEFT JOIN t_user_role ur ON (u.user_id = ur.user_id) LEFT JOIN t_role r ON r.role_id = ur.role_id WHERE 1 = 1 GROUP BY u.username, u.user_id, u.email, u.mobile, u.status, u.create_time, u.ssex, u.dept_id, u.last_login_time, u.modify_time, u.description, u.avatar ORDER BY createTime DESC LIMIT 0,10;
+2020-07-27 23:02:14 INFO  http-nio-8080-exec-10 p6spy 2020-07-27 23:02:14 | 耗时 9 ms | SQL 语句：
+SELECT u.user_id userId, u.username, u.email, u.mobile, u.password, u.status, u.create_time createTime, u.ssex sex, u.dept_id deptId, u.last_login_time lastLoginTime, u.modify_time modifyTime, u.description, u.avatar, u.theme, u.is_tab isTab, d.dept_name deptName, GROUP_CONCAT(r.role_id) roleId, GROUP_CONCAT(r.ROLE_NAME) roleName FROM t_user u LEFT JOIN t_dept d ON (u.dept_id = d.dept_id) LEFT JOIN t_user_role ur ON (u.user_id = ur.user_id) LEFT JOIN t_role r ON r.role_id = ur.role_id WHERE u.username = 'Jana' GROUP BY u.username, u.user_id, u.email, u.mobile, u.password, u.status, u.create_time, u.ssex, u.dept_id, u.last_login_time, u.modify_time, u.description, u.avatar, u.theme, u.is_tab;
+2020-07-27 23:02:14 INFO  http-nio-8080-exec-10 p6spy 2020-07-27 23:02:14 | 耗时 3 ms | SQL 语句：
+SELECT USER_ID, dept_id FROM t_user_data_permission WHERE (USER_ID = '5');
+2020-07-27 23:02:14 INFO  http-nio-8080-exec-2 p6spy 2020-07-27 23:02:14 | 耗时 0 ms | SQL 语句：
+SELECT DEPT_ID, PARENT_ID, DEPT_NAME, ORDER_NUM, CREATE_TIME, MODIFY_TIME FROM t_dept ORDER BY ORDER_NUM ASC;
+2020-07-27 23:02:14 INFO  http-nio-8080-exec-1 p6spy 2020-07-27 23:02:14 | 耗时 0 ms | SQL 语句：
+SELECT DEPT_ID, PARENT_ID, DEPT_NAME, ORDER_NUM, CREATE_TIME, MODIFY_TIME FROM t_dept;
+2020-07-27 23:02:14 INFO  http-nio-8080-exec-3 p6spy 2020-07-27 23:02:14 | 耗时 0 ms | SQL 语句：
+SELECT ROLE_ID, ROLE_NAME, REMARK, CREATE_TIME, MODIFY_TIME FROM t_role;
+2020-07-27 23:17:38 INFO  SessionValidationThread-1 org.apache.shiro.session.mgt.AbstractValidatingSessionManager Validating all active sessions...
+2020-07-27 23:17:38 INFO  SessionValidationThread-1 org.apache.shiro.session.mgt.AbstractValidatingSessionManager Finished session validation.  No sessions were stopped.
