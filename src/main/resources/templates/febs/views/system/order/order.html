@@ -229,7 +229,7 @@
             var data = obj.data,
                 layEvent = obj.event;
             if (layEvent === 'detail') {
-                febs.modal.view('订单信息', 'system/order/detail/' + data.orderId, {
+                febs.modal.view('车辆信息', 'system/vehicle/detail/' + data.orderId, {
                     area: $(window).width() <= 750 ? '95%' : '660px'
                 });
             }

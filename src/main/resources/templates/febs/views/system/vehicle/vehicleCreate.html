@@ -62,15 +62,13 @@
 </div>
 
 <script>
-    layui.use(['febs', 'form', 'formSelects', 'validate', 'treeSelect', 'eleTree'], function () {
+    layui.use(['febs', 'form', 'formSelects', 'treeSelect'], function () {
         var $ = layui.$,
             febs = layui.febs,
             layer = layui.layer,
             formSelects = layui.formSelects,
-            form = layui.form,
-            validate = layui.validate;
+            form = layui.form;
 
-        form.verify(validate);
         form.render();
 
         formSelects.render();

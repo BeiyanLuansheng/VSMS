@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -65,8 +66,9 @@ public class VehicleServiceImpl extends ServiceImpl<VehicleMapper, Vehicle> impl
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteVehicles(String[] vehicleIds) {
-        List<String> list = Arrays.asList(vehicleIds);
+    public void deleteVehicle(String vehicleId) {
+        List<String> list = new ArrayList<>();
+        list.add(vehicleId);
         this.removeByIds(list);
     }
 
@@ -74,5 +76,25 @@ public class VehicleServiceImpl extends ServiceImpl<VehicleMapper, Vehicle> impl
     @Transactional(rollbackFor = Exception.class)
     public void updateVehicle(Vehicle vehicle) {
         updateById(vehicle);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void saleVehicles(Long[] vehicleIds){
+        Arrays.stream(vehicleIds).forEach(vehicleId -> {
+            Vehicle vehicle = new Vehicle();
+            vehicle.setStatus("1");
+            this.baseMapper.update(vehicle, new LambdaQueryWrapper<Vehicle>().eq(Vehicle::getVehicleId, vehicleId));
+        });
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void maintenanceVehicles(Long[] vehicleIds){
+        Arrays.stream(vehicleIds).forEach(vehicleId -> {
+            Vehicle vehicle = new Vehicle();
+            vehicle.setMaintenanceTimes(findByVehicleId(vehicleId).getMaintenanceTimes()-1);
+            this.baseMapper.update(vehicle, new LambdaQueryWrapper<Vehicle>().eq(Vehicle::getVehicleId, vehicleId));
+        });
     }
 }

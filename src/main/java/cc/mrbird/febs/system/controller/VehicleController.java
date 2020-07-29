@@ -50,41 +50,54 @@ public class VehicleController extends BaseController {
         return new FebsResponse().success();
     }
 
-    @GetMapping("delete/{vehicleIds}")
-    @RequiresPermissions("vehicle:delete")
-    @ControllerEndpoint(operation = "删除车辆", exceptionMessage = "删除车辆失败")
-    public FebsResponse deleteVehicles(@NotBlank(message = "{required}") @PathVariable String vehicleIds) {
-        String[] ids = vehicleIds.split(StringPool.COMMA);
-        this.vehicleService.deleteVehicles(ids);
-        return new FebsResponse().success();
-    }
-
-
     @PostMapping("update")
-    @RequiresPermissions("vehicle:approve")
+    @RequiresPermissions("vehicle:modify")
     @ControllerEndpoint(operation = "修改车辆", exceptionMessage = "修改车辆失败")
-    public FebsResponse updateUser(@Valid Vehicle vehicle) {
+    public FebsResponse updateVehicle(@Valid Vehicle vehicle) {
         if (vehicle.getVehicleId() == null) {
-            throw new FebsException("车辆号为空");
+            throw new FebsException("车辆ID为空");
         }
         this.vehicleService.updateVehicle(vehicle);
         return new FebsResponse().success();
     }
 
-    /*@PostMapping("managerApprove/{vehicleIds}")
-    @RequiresPermissions("vehicle:approve:manager")
-    @ControllerEndpoint(operation = "经理审批车辆", exceptionMessage = "审批车辆失败")
-    public FebsResponse managerApproveVehicle(@NotBlank(message = "{required}") @PathVariable String vehicleIds) {
+    @GetMapping("delete/{vehicleId}")
+    @RequiresPermissions("vehicle:modify")
+    @ControllerEndpoint(operation = "删除车辆", exceptionMessage = "删除车辆失败")
+    public FebsResponse deleteVehicles(@NotBlank(message = "{required}") @PathVariable String vehicleId) {
+        this.vehicleService.deleteVehicle(vehicleId);
+        return new FebsResponse().success();
+    }
+
+    @PostMapping("sale/{vehicleIds}")
+    @RequiresPermissions("vehicle:sale")
+    @ControllerEndpoint(operation = "出售车辆", exceptionMessage = "出售车辆失败")
+    public FebsResponse saleVehicles(@NotBlank(message = "{required}") @PathVariable String vehicleIds) {
         String[] idsArray = vehicleIds.split(StringPool.COMMA);
         Long[] ids = new Long[idsArray.length];
-        for(int i=0; i<idsArray.length; i++){
+        for (int i = 0; i < idsArray.length; i++) {
             Long id = Long.valueOf(idsArray[i]);
-            if (this.vehicleService.findByVehicleId(id).getStatus().equals("待审核"))
+            if (this.vehicleService.findByVehicleId(id).getStatus().equals("0"))
                 ids[i] = id;
-            else throw new FebsException("选中车辆含有非待审核状态车辆");
+            else throw new FebsException("选中已出售状态车辆");
         }
-        this.vehicleService.statusChange("已审核", ids);
+        this.vehicleService.saleVehicles(ids);
         return new FebsResponse().success();
-    }*/
+    }
 
+    @PostMapping("maintenance/{vehicleIds}")
+    @RequiresPermissions("vehicle:maintenance")
+    @ControllerEndpoint(operation = "保养车辆", exceptionMessage = "保养车辆失败")
+    public FebsResponse maintenanceVehicles(@NotBlank(message = "{required}") @PathVariable String vehicleIds) {
+        String[] idsArray = vehicleIds.split(StringPool.COMMA);
+        Long[] ids = new Long[idsArray.length];
+        for (int i = 0; i < idsArray.length; i++) {
+            Long id = Long.valueOf(idsArray[i]);
+            if (this.vehicleService.findByVehicleId(id).getMaintenanceTimes() > 0)
+                ids[i] = id;
+            else throw new FebsException("选中保养次数已用完的车辆");
+        }
+        this.vehicleService.maintenanceVehicles(ids);
+        return new FebsResponse().success();
+    }
 }

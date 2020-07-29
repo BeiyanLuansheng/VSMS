@@ -45,9 +45,9 @@ public interface IVehicleService extends IService<Vehicle> {
     /**
      * 删除车辆
      *
-     * @param vehicleIds 车辆 id数组
+     * @param vehicleId 车辆 id数组
      */
-    void deleteVehicles(String[] vehicleIds);
+    void deleteVehicle(String vehicleId);
 
     /**
      * 修改车辆
@@ -56,4 +56,17 @@ public interface IVehicleService extends IService<Vehicle> {
      */
     void updateVehicle(Vehicle vehicle);
 
+    /**
+     * 出售车辆
+     *
+     * @param vehicleIds
+     */
+    void saleVehicles(Long[] vehicleIds);
+
+    /**
+     * 保养车辆
+     *
+     * @param vehicleIds
+     */
+    void maintenanceVehicles(Long[] vehicleIds);
 }

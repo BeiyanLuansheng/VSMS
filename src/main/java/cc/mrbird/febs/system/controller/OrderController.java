@@ -63,7 +63,7 @@ public class OrderController extends BaseController {
     @PostMapping("update")
     @RequiresPermissions("order:approve")
     @ControllerEndpoint(operation = "修改订单", exceptionMessage = "修改订单失败")
-    public FebsResponse updateUser(@Valid Order order) {
+    public FebsResponse updateOrder(@Valid Order order) {
         if (order.getOrderId() == null) {
             throw new FebsException("订单号为空");
         }

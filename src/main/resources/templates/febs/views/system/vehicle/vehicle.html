@@ -34,7 +34,7 @@
                                     <div class="layui-inline">
                                         <label class="layui-form-label layui-form-label-sm">生产日期</label>
                                         <div class="layui-input-inline">
-                                            <input type="text" name="manufactureDate" id="vehicle-manufactureDate" class="layui-input">
+                                            <input type="text" name="time" id="vehicle-manufactureDate" class="layui-input">
                                         </div>
                                     </div>
                                     <div class="layui-inline">
@@ -69,7 +69,7 @@
                                     <i class="layui-icon">&#xe79b;</i>
                                 </div>
                                 <div class="layui-btn layui-btn-sm layui-btn-primary table-action action-more"
-                                     shiro:hasAnyPermissions="order:view,order:create,order:approve,order:archive">
+                                     shiro:hasAnyPermissions="vehicle:view,vehicle:create,vehicle:sale,vehicle:maintenance">
                                     <i class="layui-icon">&#xe875;</i>
                                 </div>
                             </div>
@@ -92,14 +92,14 @@
 </script>
 
 <script type="text/html" id="vehicle-option">
-    <span shiro:lacksPermission="order:view">
+    <span shiro:lacksPermission="vehicle:view">
         <span class="layui-badge-dot febs-bg-orange"></span> 无权限
     </span>
-    <a lay-event="detail" shiro:hasPermission="order:view"><i
+    <a lay-event="detail" shiro:hasPermission="vehicle:view"><i
             class="layui-icon febs-edit-area febs-green">&#xe7a5;</i></a>
-    <a lay-event="edit" shiro:hasPermission="order:approve"><i
+    <a lay-event="edit" shiro:hasPermission="vehicle:modify"><i
             class="layui-icon febs-edit-area febs-blue">&#xe7a4;</i></a>
-    <a lay-event="del" shiro:hasPermission="order:archive"><i
+    <a lay-event="del" shiro:hasPermission="vehicle:modify"><i
             class="layui-icon febs-edit-area febs-red">&#xe7f9;</i></a>
 </script>
 <script data-th-inline="none" type="text/javascript">
@@ -117,8 +117,8 @@
             $searchForm = $view.find('form'),
             sortObject = {field: 'createTime', type: null},
             tableIns,
-            createTimeFrom,
-            createTimeTo;
+            manufactureDateFrom,
+            manufactureDateTo;
 
         form.render();
 
@@ -133,7 +133,7 @@
         dropdown.render({
             elem: $view.find('.action-more'),
             click: function (name, elem, event) {
-                var checkStatus = table.checkStatus('orderTable');
+                var checkStatus = table.checkStatus('vehicleTable');
                 if (name === 'create') {
                     febs.modal.open('新增车辆', 'system/vehicle/create', {
                         btn: ['提交', '重置'],
@@ -148,18 +148,35 @@
                         }
                     });
                 }
-                if (name === 'archive') {
-                    var checkStatus = table.checkStatus('orderTable');
+                if (name === 'sale') {
+                    var checkStatus = table.checkStatus('vehicleTable');
                     if (!checkStatus.data.length) {
-                        febs.alert.warn('请选择需要归档的订单');
+                        febs.alert.warn('请选择需要出售的车辆');
                     } else {
-                        febs.modal.confirm('归档订单', '确定归档选中订单？', function () {
-                            var orderIds = [];
+                        febs.modal.confirm('出售车辆', '确定出售选中车辆？', function () {
+                            var vehicleIds = [];
                             layui.each(checkStatus.data, function (key, item) {
-                                orderIds.push(item.orderId)
+                                vehicleIds.push(item.vehicleId)
                             });
-                            febs.post(ctx + 'order/archive/' + orderIds.join(','), null, function () {
-                                febs.alert.success('订单归档成功');
+                            febs.post(ctx + 'vehicle/sale/' + vehicleIds.join(','), null, function () {
+                                febs.alert.success('车辆出售成功');
+                                $query.click();
+                            });
+                        });
+                    }
+                }
+                if (name === 'maintenance') {
+                    var checkStatus = table.checkStatus('vehicleTable');
+                    if (!checkStatus.data.length) {
+                        febs.alert.warn('请选择需要保养的车辆');
+                    } else {
+                        febs.modal.confirm('保养车辆', '确定保养选中车辆？', function () {
+                            var vehicleIds = [];
+                            layui.each(checkStatus.data, function (key, item) {
+                                vehicleIds.push(item.vehicleId)
+                            });
+                            febs.post(ctx + 'vehicle/maintenance/' + vehicleIds.join(','), null, function () {
+                                febs.alert.success('车辆保养成功');
                                 $query.click();
                             });
                         });
@@ -169,11 +186,15 @@
             options: [{
                 name: 'create',
                 title: '新增车辆',
-                perms: 'order:create'
+                perms: 'vehicle:create'
             }, {
-                name: 'archive',
-                title: '归档订单',
-                perms: 'order:archive'
+                name: 'sale',
+                title: '出售车辆',
+                perms: 'vehicle:sale'
+            },{
+                name: 'maintenance',
+                title: '保养车辆',
+                perms: 'vehicle:modify'
             }]
         });
 
@@ -181,26 +202,29 @@
             var data = obj.data,
                 layEvent = obj.event;
             if (layEvent === 'detail') {
-                febs.modal.view('订单信息', 'system/order/detail/' + data.orderId, {
+                febs.modal.view('车辆信息', 'system/vehicle/detail/' + data.vehicleId, {
                     area: $(window).width() <= 750 ? '95%' : '660px'
                 });
             }
-            if (layEvent === 'del') {
-                febs.modal.confirm('删除订单', '确定删除该订单？', function () {
-                    deleteUsers(data.userId);
-                });
-            }
             if (layEvent === 'edit') {
-                febs.modal.open('修改订单', 'system/order/update/' + data.orderId, {
+                febs.modal.open('修改车辆', 'system/vehicle/update/' + data.vehicleId, {
                     area: $(window).width() <= 750 ? '90%' : '50%',
                     offset: '30px',
                     btn: ['提交', '取消'],
                     yes: function (index, layero) {
-                        $('#order-update').find('#submit').trigger('click');
+                        $('#vehicle-update').find('#submit').trigger('click');
                     },
                     btn2: function () {
                         layer.closeAll();
                     }
+                });
+            }
+            if (layEvent === 'del') {
+                febs.modal.confirm('删除车辆', '确定删除选中车辆？', function () {
+                    febs.get(ctx + 'vehicle/delete/' + data.vehicleId, null, function () {
+                        febs.alert.success('删除车辆成功');
+                        $query.click();
+                    });
                 });
             }
         });
@@ -225,8 +249,8 @@
             $searchForm[0].reset();
             treeSelect.revokeNode('dept');
             sortObject.type = 'null';
-            createTimeTo = null;
-            createTimeFrom = null;
+            manufactureDateTo = null;
+            manufactureDateFrom = null;
             tableIns.reload({where: getQueryParams(), page: {curr: 1}, initSort: sortObject});
         });
 
@@ -252,14 +276,14 @@
 
         function getQueryParams() {
             var params = $searchForm.serializeJson();
-            var createTime = params.time;
-            if (createTime) {
-                createTimeFrom = createTime.split(' - ')[0];
-                createTimeTo = createTime.split(' - ')[1];
+            var manufactureDate = params.time;
+            if (manufactureDate) {
+                manufactureDateFrom = manufactureDate.split(' - ')[0];
+                manufactureDateTo = manufactureDate.split(' - ')[1];
             }
             params.invalidate_ie_cache = new Date();
-            params.createTimeFrom = createTimeFrom;
-            params.createTimeTo = createTimeTo;
+            params.manufactureDateFrom = manufactureDateFrom;
+            params.manufactureDateTo = manufactureDateTo;
             return params;
         }
     })

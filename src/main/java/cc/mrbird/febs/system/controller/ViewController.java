@@ -185,18 +185,25 @@ public class ViewController extends BaseController {
     }
 
     /* 修改车辆 */
-    @GetMapping(FebsConstant.VIEW_PREFIX + "system/order/update/{vehicleId}")
-    @RequiresPermissions("vehicle:approve")
+    @GetMapping(FebsConstant.VIEW_PREFIX + "system/vehicle/update/{vehicleId}")
+    @RequiresPermissions("vehicle:modify")
     public String systemVehicleUpdate(@PathVariable Long vehicleId, Model model) {
-        resolveOrderModel(vehicleId, model);
+        resolveVehicleModel(vehicleId, model);
         return FebsUtil.view("system/vehicle/vehicleUpdate");
     }
 
-    /* 车辆归档 */
-    @GetMapping(FebsConstant.VIEW_PREFIX + "system/vehicle/archive")
-    @RequiresPermissions("vehicle:archive")
-    public String systemVehicleArchive() {
-        return FebsUtil.view("system/vehicle/vehicleArchive");
+    /* 出售车辆 */
+    @GetMapping(FebsConstant.VIEW_PREFIX + "system/vehicle/sale")
+    @RequiresPermissions("vehicle:sale")
+    public String systemVehicleSale() {
+        return FebsUtil.view("system/vehicle/vehicleSale");
+    }
+
+    /* 保养车辆 */
+    @GetMapping(FebsConstant.VIEW_PREFIX + "system/vehicle/maintenance")
+    @RequiresPermissions("vehicle:maintenance")
+    public String systemVehicleMaintenance() {
+        return FebsUtil.view("system/vehicle/vehicleMaintenance");
     }
 
     private void resolveVehicleModel(Long vehicleId, Model model) {
