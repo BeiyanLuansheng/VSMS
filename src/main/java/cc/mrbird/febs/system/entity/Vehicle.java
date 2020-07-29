@@ -31,7 +31,7 @@ public class Vehicle implements Serializable {
      * 车型
      */
     @TableField("TYPE")
-    private Long type;
+    private String type;
 
     /**
      * 颜色
@@ -43,7 +43,7 @@ public class Vehicle implements Serializable {
      * 车重
      */
     @TableField("DEAD_WEIGHT")
-    private String deadWeight;
+    private Long deadWeight;
 
     /**
      * 生产日期
@@ -68,7 +68,7 @@ public class Vehicle implements Serializable {
      * 剩余保养次数
      */
     @TableField("MAINTENANCE_TIMES")
-    private String maintenanceTimes;
+    private Long maintenanceTimes;
 
     /* 表示时间范围，在数据库的表中不存在这两项 */
     @TableField(exist = false)

@@ -3,7 +3,7 @@
         <div class="layui-col-md12">
             <div class="layui-card">
                 <div class="layui-card-body febs-table-full">
-                    <form class="layui-form layui-table-form" lay-filter="order-table-form">
+                    <form class="layui-form layui-table-form" lay-filter="vehicle-table-form">
                         <div class="layui-row">
                             <div class="layui-col-md10">
                                 <div class="layui-form-item">
@@ -84,8 +84,8 @@
 <script type="text/html" id="vehicle-status">
     {{#
     var status = {
-    0: {title: '待审核', color: 'green'},
-    1: {title: '已归档', color: 'volcano'}
+    0: {title: '未出售', color: 'green'},
+    1: {title: '已出售', color: 'volcano'}
     }[d.status];
     }}
     <span class="layui-badge febs-bg-{{status.color}}">{{ status.title }}</span>
@@ -135,15 +135,15 @@
             click: function (name, elem, event) {
                 var checkStatus = table.checkStatus('orderTable');
                 if (name === 'create') {
-                    febs.modal.open('新增订单', 'system/order/create', {
+                    febs.modal.open('新增车辆', 'system/vehicle/create', {
                         btn: ['提交', '重置'],
                         area: $(window).width() <= 750 ? '95%' : '50%',
                         offset: '30px',
                         yes: function (index, layero) {
-                            $('#order-add').find('#submit').trigger('click');
+                            $('#vehicle-add').find('#submit').trigger('click');
                         },
                         btn2: function () {
-                            $('#order-add').find('#reset').trigger('click');
+                            $('#vehicle-add').find('#reset').trigger('click');
                             return false;
                         }
                     });
@@ -168,7 +168,7 @@
             },
             options: [{
                 name: 'create',
-                title: '新增订单',
+                title: '新增车辆',
                 perms: 'order:create'
             }, {
                 name: 'archive',
@@ -243,6 +243,7 @@
                     {field: 'color', title: '颜色', minWidth: 165},
                     {field: 'deadWeight', title: '车重(KG)', minWidth: 180},
                     {field: 'lowestPrice', title: '最低价格'},
+                    {field: 'maintenanceTimes', title: '剩余保养次数'},
                     {field: 'status', title: '状态', templet: '#vehicle-status'},
                     {title: '操作', toolbar: '#vehicle-option', minWidth: 140}
                 ]]
