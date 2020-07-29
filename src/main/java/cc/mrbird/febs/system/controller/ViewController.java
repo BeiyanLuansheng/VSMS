@@ -5,13 +5,11 @@ import cc.mrbird.febs.common.controller.BaseController;
 import cc.mrbird.febs.common.entity.FebsConstant;
 import cc.mrbird.febs.common.utils.DateUtil;
 import cc.mrbird.febs.common.utils.FebsUtil;
+import cc.mrbird.febs.system.entity.Customer;
 import cc.mrbird.febs.system.entity.Order;
 import cc.mrbird.febs.system.entity.User;
 import cc.mrbird.febs.system.entity.Vehicle;
-import cc.mrbird.febs.system.service.IOrderService;
-import cc.mrbird.febs.system.service.IUserDataPermissionService;
-import cc.mrbird.febs.system.service.IUserService;
-import cc.mrbird.febs.system.service.IVehicleService;
+import cc.mrbird.febs.system.service.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -39,6 +37,7 @@ public class ViewController extends BaseController {
     /* 新增数据 */
     private final IOrderService orderService;
     private final IVehicleService vehicleService;
+    private final ICustomerService customerService;
 
     @GetMapping("login")
     @ResponseBody
@@ -209,6 +208,53 @@ public class ViewController extends BaseController {
     private void resolveVehicleModel(Long vehicleId, Model model) {
         Vehicle vehicle = this.vehicleService.findByVehicleId(vehicleId);
         model.addAttribute("vehicle", vehicle);
+    }
+
+    /**
+     * customer function======================================================================================
+     * @author XuJian
+     */
+    /* 客户管理 */
+    @GetMapping(FebsConstant.VIEW_PREFIX + "system/customer")
+    @RequiresPermissions("customer:view")
+    public String systemCustomer() {
+        return FebsUtil.view("system/customer/customer");
+    }
+
+    /* 新增客户 */
+    @GetMapping(FebsConstant.VIEW_PREFIX + "system/customer/create")
+    @RequiresPermissions("customer:create")
+    public String systemCustomerCreate() {
+        return FebsUtil.view("system/customer/customerCreate");
+    }
+
+    /* 客户详情 */
+    @GetMapping(FebsConstant.VIEW_PREFIX + "system/customer/detail/{customerId}")
+    @RequiresPermissions("customer:view")
+    public String systemCustomerDetail(@PathVariable Long customerId, Model model) {
+        resolveCustomerModel(customerId, model, true);
+        return FebsUtil.view("system/customer/customerDetail");
+    }
+
+    /* 修改客户 */
+    @GetMapping(FebsConstant.VIEW_PREFIX + "system/customer/update/{customerId}")
+    @RequiresPermissions("customer:update")
+    public String systemCustomerUpdate(@PathVariable Long customerId, Model model) {
+        resolveCustomerModel(customerId, model, true);
+        return FebsUtil.view("system/customer/customerUpdate");
+    }
+
+    private void resolveCustomerModel(Long customerId, Model model, Boolean transform) {
+        Customer customer = this.customerService.findByCustomerId(customerId);
+        model.addAttribute("customer", customer);
+        if (transform) {
+            String gender = customer.getGender();
+            if ("0".equals(gender)) {
+                customer.setGender("男");
+            } else if ("1".equals(gender)) {
+                customer.setGender("女");
+            }
+        }
     }
     /**
      * ===============================================================================================================
