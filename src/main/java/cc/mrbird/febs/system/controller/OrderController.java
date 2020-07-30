@@ -67,6 +67,8 @@ public class OrderController extends BaseController {
         if (order.getOrderId() == null) {
             throw new FebsException("订单号为空");
         }
+        if(orderService.findByOrderId(order.getOrderId()).getStatus().equals("已归档"))
+            throw new FebsException("订单已归档");
         this.orderService.updateOrder(order);
         return new FebsResponse().success();
     }
@@ -129,7 +131,7 @@ public class OrderController extends BaseController {
             Long id = Long.valueOf(idsArray[i]);
             if (this.orderService.findByOrderId(id).getStatus().equals("已交付"))
                 ids[i] = id;
-            else throw new FebsException("选中订单含有非已付款状态订单");
+            else throw new FebsException("选中订单含有非已交付状态订单");
         }
         this.orderService.statusChange("已归档", ids);
         return new FebsResponse().success();

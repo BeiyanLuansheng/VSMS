@@ -96,7 +96,15 @@
     }}
     <span class="layui-badge febs-bg-{{status.color}}">{{ status.title }}</span>
 </script>
-
+<script type="text/html" id="order-option">
+    <span shiro:lacksPermission="order:view">
+        <span class="layui-badge-dot febs-bg-orange"></span> 无权限
+    </span>
+    <a lay-event="detail" shiro:hasPermission="order:view"><i
+            class="layui-icon febs-edit-area febs-green">&#xe7a5;</i></a>
+    <a lay-event="archive" shiro:hasPermission="order:archive"><i
+            class="layui-icon febs-edit-area febs-blue">&#xe7a4;</i></a>
+</script>
 <script data-th-inline="none" type="text/javascript">
     layui.use(['dropdown', 'jquery', 'laydate', 'form', 'table', 'febs', 'treeSelect'], function () {
         var $ = layui.jquery,
@@ -122,6 +130,24 @@
             elem: '#order-createTime',
             range: true,
             trigger: 'click'
+        });
+
+        table.on('tool(orderTable)', function (obj) {
+            var data = obj.data,
+                layEvent = obj.event;
+            if (layEvent === 'detail') {
+                febs.modal.view('订单信息', 'system/order/detail/' + data.vehicleId, {
+                    area: $(window).width() <= 750 ? '95%' : '660px'
+                });
+            }
+            if (layEvent === 'archive') {
+                febs.modal.confirm('归档订单', '确定归档该订单？', function () {
+                    febs.post(ctx + 'order/archive/' + data.orderId, null, function () {
+                        febs.alert.success('归档订单成功');
+                        $query.click();
+                    });
+                });
+            }
         });
 
         table.on('sort(orderTable)', function (obj) {
@@ -182,6 +208,7 @@
                     {field: 'vehicleId', title: '车辆ID'},
                     {field: 'price', title: '价格'},
                     {field: 'status', title: '状态', templet: '#order-status'},
+                    {title: '操作', toolbar: '#order-option', minWidth: 140}
                 ]]
             });
         }

@@ -229,13 +229,16 @@
             var data = obj.data,
                 layEvent = obj.event;
             if (layEvent === 'detail') {
-                febs.modal.view('车辆信息', 'system/vehicle/detail/' + data.orderId, {
+                febs.modal.view('订单信息', 'system/order/detail/' + data.orderId, {
                     area: $(window).width() <= 750 ? '95%' : '660px'
                 });
             }
             if (layEvent === 'del') {
                 febs.modal.confirm('删除订单', '确定删除该订单？', function () {
-                    deleteUsers(data.userId);
+                    febs.get(ctx + 'order/delete/' + data.orderId, null, function () {
+                        febs.alert.success('删除订单成功');
+                        $query.click();
+                    });
                 });
             }
             if (layEvent === 'edit') {

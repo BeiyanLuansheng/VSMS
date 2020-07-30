@@ -14,7 +14,7 @@
                                         </div>
                                     </div>
                                     <div class="layui-inline">
-                                        <label class="layui-form-label layui-form-label-sm">创建时间</label>
+                                        <label class="layui-form-label layui-form-label-sm">入职时间</label>
                                         <div class="layui-input-inline">
                                             <input type="text" name="time" id="user-createTime" class="layui-input">
                                         </div>
@@ -24,8 +24,8 @@
                                         <div class="layui-input-inline">
                                             <select name="status">
                                                 <option value=""></option>
-                                                <option value="0">禁用</option>
-                                                <option value="1">有效</option>
+                                                <option value="0">离职</option>
+                                                <option value="1">在职</option>
                                             </select>
                                         </div>
                                     </div>
@@ -78,8 +78,8 @@
 <script type="text/html" id="user-status">
     {{#
     var status = {
-    1: {title: '有效', color: 'green'},
-    0: {title: '禁用', color: 'volcano'}
+    1: {title: '在职', color: 'green'},
+    0: {title: '离职', color: 'volcano'}
     }[d.status];
     }}
     <span class="layui-badge febs-bg-{{status.color}}">{{ status.title }}</span>
@@ -276,7 +276,7 @@
                     {field: 'mobile', title: '手机', minWidth: 165},
                     {field: 'email', title: '邮箱', minWidth: 180},
                     {title: '状态', templet: '#user-status'},
-                    {field: 'createTime', title: '创建时间', minWidth: 180, sort: true},
+                    {field: 'createTime', title: '入职时间', minWidth: 180, sort: true},
                     {title: '操作', toolbar: '#user-option', minWidth: 140}
                 ]]
             });

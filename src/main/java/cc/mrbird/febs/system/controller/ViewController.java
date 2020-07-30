@@ -179,7 +179,7 @@ public class ViewController extends BaseController {
     @GetMapping(FebsConstant.VIEW_PREFIX + "system/vehicle/detail/{vehicleId}")
     @RequiresPermissions("vehicle:view")
     public String systemVehicleDetail(@PathVariable Long vehicleId, Model model) {
-        resolveVehicleModel(vehicleId, model);
+        resolveVehicleModel(vehicleId, model, true);
         return FebsUtil.view("system/vehicle/vehicleDetail");
     }
 
@@ -187,7 +187,7 @@ public class ViewController extends BaseController {
     @GetMapping(FebsConstant.VIEW_PREFIX + "system/vehicle/update/{vehicleId}")
     @RequiresPermissions("vehicle:modify")
     public String systemVehicleUpdate(@PathVariable Long vehicleId, Model model) {
-        resolveVehicleModel(vehicleId, model);
+        resolveVehicleModel(vehicleId, model, false);
         return FebsUtil.view("system/vehicle/vehicleUpdate");
     }
 
@@ -205,9 +205,17 @@ public class ViewController extends BaseController {
         return FebsUtil.view("system/vehicle/vehicleMaintenance");
     }
 
-    private void resolveVehicleModel(Long vehicleId, Model model) {
+    private void resolveVehicleModel(Long vehicleId, Model model, Boolean transform) {
         Vehicle vehicle = this.vehicleService.findByVehicleId(vehicleId);
         model.addAttribute("vehicle", vehicle);
+        if (transform) {
+            String status = vehicle.getStatus();
+            if ("0".equals(status)) {
+                vehicle.setStatus("未出售");
+            } else if ("1".equals(status)) {
+                vehicle.setStatus("已出售");
+            }
+        }
     }
 
     /**
