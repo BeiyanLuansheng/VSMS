@@ -9,7 +9,6 @@ import cc.mrbird.febs.system.entity.Order;
 import cc.mrbird.febs.system.entity.User;
 import cc.mrbird.febs.system.service.IOrderService;
 import cc.mrbird.febs.system.service.IUserService;
-import cc.mrbird.febs.system.service.impl.UserServiceImpl;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

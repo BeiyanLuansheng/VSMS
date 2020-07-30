@@ -264,6 +264,18 @@ public class ViewController extends BaseController {
             }
         }
     }
+
+    /**
+     * achievement function======================================================================================
+     * @author XuJian
+     */
+    /* 业绩统计 */
+    @GetMapping(FebsConstant.VIEW_PREFIX + "system/achievement")
+    @RequiresPermissions("achievement:view")
+    public String systemAchievement() {
+        return FebsUtil.view("system/achievement/achievement");
+    }
+
     /**
      * ===============================================================================================================
      */
