@@ -49,6 +49,20 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     }
 
     @Override
+    public IPage<Order> findOrderDetailListWithUserId(Order order, QueryRequest request, Long userId) {
+        if (StringUtils.isNotBlank(order.getCreateTimeFrom()) &&
+                StringUtils.equals(order.getCreateTimeFrom(), order.getCreateTimeTo())) {
+            order.setCreateTimeFrom(order.getCreateTimeFrom() + " 00:00:00");
+            order.setCreateTimeTo(order.getCreateTimeTo() + " 23:59:59");
+        }
+        Page<Order> page = new Page<>(request.getPageNum(), request.getPageSize());
+        page.setSearchCount(false);
+        page.setTotal(baseMapper.countOrderDetailWithUserId(order, userId));
+        SortUtil.handlePageSort(request, page, "orderId", FebsConstant.ORDER_ASC, false);
+        return this.baseMapper.findOrderDetailPageWithUserId(page, order, userId);
+    }
+
+    @Override
     public Order findOrderDetailList(Long orderId) {
         Order param = new Order();
         param.setOrderId(orderId);

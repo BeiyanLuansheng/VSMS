@@ -40,4 +40,22 @@ public interface OrderMapper extends BaseMapper<Order> {
      */
     List<Order> findOrderDetail(@Param("order") Order order);
 
+    /**
+     * 查找当掐登录用户订单详细信息
+     *
+     * @param page 分页对象
+     * @param order 订单对象，用于传递查询条件
+     * @return Ipage
+     */
+    <T> IPage<Order> findOrderDetailPageWithUserId(Page<T> page, @Param("order") Order order, Long userId);
+
+    /**
+     * 查找掐登录用户订单详细信息
+     *
+     * @param order 订单对象，用于传递查询条件
+     * @return List<Order>
+     */
+    List<Order> findOrderDetailWithUserId(@Param("order") Order order, Long userId);
+
+    long countOrderDetailWithUserId(@Param("order") Order order, Long userId);
 }

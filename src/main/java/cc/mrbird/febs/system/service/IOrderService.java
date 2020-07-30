@@ -28,6 +28,15 @@ public interface IOrderService extends IService<Order> {
     IPage<Order> findOrderDetailList(Order order, QueryRequest request);
 
     /**
+     * 根据当前登录用户名查找订单详细信息
+     *
+     * @param request request
+     * @param order    订单对象，用于传递查询条件
+     * @return IPage
+     */
+    IPage<Order> findOrderDetailListWithUserId(Order order, QueryRequest request, Long userId);
+
+    /**
      * 通过订单号查找订单详细信息
      *
      * @param orderId 订单号

@@ -6,7 +6,10 @@ import cc.mrbird.febs.common.entity.FebsResponse;
 import cc.mrbird.febs.common.entity.QueryRequest;
 import cc.mrbird.febs.common.exception.FebsException;
 import cc.mrbird.febs.system.entity.Order;
+import cc.mrbird.febs.system.entity.User;
 import cc.mrbird.febs.system.service.IOrderService;
+import cc.mrbird.febs.system.service.IUserService;
+import cc.mrbird.febs.system.service.impl.UserServiceImpl;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,16 +32,22 @@ import java.util.Map;
 public class OrderController extends BaseController {
 
     private final IOrderService orderService;
+    private final IUserService userService;
 
     @GetMapping("{orderId}")
     public Order getOrder(@NotBlank(message = "{required}") @PathVariable Long orderId) {
         return this.orderService.findOrderDetailList(orderId);
     }
 
-    @GetMapping("list")
+    @GetMapping("list/{username}")
     @RequiresPermissions("order:view")
-    public FebsResponse orderList(Order order, QueryRequest request) {
-        Map<String, Object> dataTable = getDataTable(this.orderService.findOrderDetailList(order, request));
+    public FebsResponse orderList(Order order, QueryRequest request,
+                                  @NotBlank(message = "{required}") @PathVariable String username) {
+        Map<String, Object> dataTable;
+        User user = userService.findByName(username);
+        if ("81".equals(user.getRoleId())) //此处埋下一个坑
+            dataTable = getDataTable(this.orderService.findOrderDetailListWithUserId(order, request, user.getUserId()));
+        else dataTable = getDataTable(this.orderService.findOrderDetailList(order, request));
         return new FebsResponse().success().data(dataTable);
     }
 
