@@ -201,7 +201,7 @@
             tableIns = febs.table.init({
                 elem: $view.find('table'),
                 id: 'orderTable',
-                url: ctx + 'order/list',
+                url: ctx + 'order/list/' + currentUser.username,
                 cols: [[
                     {type: 'checkbox'},
                     {field: 'orderId', title: '订单号', minWidth: 100},
@@ -211,7 +211,7 @@
                     {field: 'customerPhone', title: '客户手机', minWidth: 180},
                     {field: 'vehicleId', title: '车辆ID'},
                     {field: 'price', title: '价格'},
-                    {field: 'status', title: '状态', templet: '#order-status'},
+                    {field: 'status', title: '状态', templet: '#order-status'}
                 ]]
             });
         }

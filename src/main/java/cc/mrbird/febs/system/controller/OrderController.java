@@ -59,7 +59,7 @@ public class OrderController extends BaseController {
     }
 
     @GetMapping("delete/{orderIds}")
-    @RequiresPermissions("order:delete")
+    @RequiresPermissions("order:archive")
     @ControllerEndpoint(operation = "删除订单", exceptionMessage = "删除订单失败")
     public FebsResponse deleteOrders(@NotBlank(message = "{required}") @PathVariable String orderIds) {
         String[] ids = orderIds.split(StringPool.COMMA);

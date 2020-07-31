@@ -669,3 +669,272 @@ SELECT date_format(l.login_time, '%m-%d') days, count(1) count FROM (SELECT * FR
 SELECT date_format(l.login_time, '%m-%d') days, count(1) count FROM (SELECT * FROM t_login_log WHERE date_sub(curdate(), INTERVAL 10 day) <= date(login_time)) AS l WHERE 1 = 1 AND l.username = 'MrBird' GROUP BY days;
 2020-07-30 20:42:23 INFO  Febs-Async-Thread1 p6spy 2020-07-30 20:42:23 | ºÄÊ± 2 ms | SQL Óï¾ä£º
 UPDATE t_user SET LAST_LOGIN_TIME = '2020-07-30T20:42:22.897+0800' WHERE (USERNAME = 'MrBird');
+2020-07-30 20:50:56 INFO  http-nio-8080-exec-2 p6spy 2020-07-30 20:50:56 | ºÄÊ± 11 ms | SQL Óï¾ä£º
+SELECT r.* FROM t_role r LEFT JOIN t_user_role ur ON (r.role_id = ur.role_id) LEFT JOIN t_user u ON (u.user_id = ur.user_id) WHERE u.username = 'MrBird';
+2020-07-30 20:50:56 INFO  http-nio-8080-exec-2 p6spy 2020-07-30 20:50:56 | ºÄÊ± 3 ms | SQL Óï¾ä£º
+SELECT m.perms FROM t_role r LEFT JOIN t_user_role ur ON (r.role_id = ur.role_id) LEFT JOIN t_user u ON (u.user_id = ur.user_id) LEFT JOIN t_role_menu rm ON (rm.role_id = r.role_id) LEFT JOIN t_menu m ON (m.menu_id = rm.menu_id) WHERE u.username = 'MrBird' AND m.perms IS NOT NULL AND m.perms <> '';
+2020-07-30 20:50:56 INFO  http-nio-8080-exec-2 p6spy 2020-07-30 20:50:56 | ºÄÊ± 3 ms | SQL Óï¾ä£º
+SELECT u.user_id userId, u.username, u.email, u.mobile, u.password, u.status, u.create_time createTime, u.ssex sex, u.dept_id deptId, u.last_login_time lastLoginTime, u.modify_time modifyTime, u.description, u.avatar, u.theme, u.is_tab isTab, d.dept_name deptName, GROUP_CONCAT(r.role_id) roleId, GROUP_CONCAT(r.ROLE_NAME) roleName FROM t_user u LEFT JOIN t_dept d ON (u.dept_id = d.dept_id) LEFT JOIN t_user_role ur ON (u.user_id = ur.user_id) LEFT JOIN t_role r ON r.role_id = ur.role_id WHERE u.username = 'MrBird' GROUP BY u.username, u.user_id, u.email, u.mobile, u.password, u.status, u.create_time, u.ssex, u.dept_id, u.last_login_time, u.modify_time, u.description, u.avatar, u.theme, u.is_tab;
+2020-07-30 20:50:58 INFO  http-nio-8080-exec-7 p6spy 2020-07-30 20:50:58 | ºÄÊ± 2 ms | SQL Óï¾ä£º
+SELECT m.* FROM t_menu m WHERE m.type <> 1 AND m.MENU_ID IN (SELECT DISTINCT rm.menu_id FROM t_role_menu rm LEFT JOIN t_role r ON (rm.role_id = r.role_id) LEFT JOIN t_user_role ur ON (ur.role_id = r.role_id) LEFT JOIN t_user u ON (u.user_id = ur.user_id) WHERE u.username = 'MrBird') ORDER BY m.order_num;
+2020-07-30 20:50:58 INFO  http-nio-8080-exec-8 p6spy 2020-07-30 20:50:58 | ºÄÊ± 4 ms | SQL Óï¾ä£º
+SELECT count(1) FROM t_login_log;
+2020-07-30 20:50:58 INFO  http-nio-8080-exec-8 p6spy 2020-07-30 20:50:58 | ºÄÊ± 0 ms | SQL Óï¾ä£º
+SELECT count(1) FROM t_login_log WHERE login_time BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 1 DAY);
+2020-07-30 20:50:58 INFO  http-nio-8080-exec-8 p6spy 2020-07-30 20:50:58 | ºÄÊ± 1 ms | SQL Óï¾ä£º
+SELECT count(DISTINCT (ip)) FROM t_login_log WHERE login_time BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 1 DAY);
+2020-07-30 20:50:58 INFO  Febs-Async-Thread2 p6spy 2020-07-30 20:50:58 | ºÄÊ± 11 ms | SQL Óï¾ä£º
+UPDATE t_user SET LAST_LOGIN_TIME = '2020-07-30T20:50:58.451+0800' WHERE (USERNAME = 'MrBird');
+2020-07-30 20:50:58 INFO  http-nio-8080-exec-8 p6spy 2020-07-30 20:50:58 | ºÄÊ± 1 ms | SQL Óï¾ä£º
+SELECT date_format(l.login_time, '%m-%d') days, count(1) count FROM (SELECT * FROM t_login_log WHERE date_sub(curdate(), INTERVAL 10 day) <= date(login_time)) AS l WHERE 1 = 1 GROUP BY days;
+2020-07-30 20:50:58 INFO  http-nio-8080-exec-8 p6spy 2020-07-30 20:50:58 | ºÄÊ± 1 ms | SQL Óï¾ä£º
+SELECT date_format(l.login_time, '%m-%d') days, count(1) count FROM (SELECT * FROM t_login_log WHERE date_sub(curdate(), INTERVAL 10 day) <= date(login_time)) AS l WHERE 1 = 1 AND l.username = 'MrBird' GROUP BY days;
+2020-07-30 20:51:34 INFO  SpringContextShutdownHook org.quartz.core.QuartzScheduler Scheduler FEBS_Scheduler_$_DESKTOP-PHMKGBV1596112749741 paused.
+2020-07-30 20:51:34 INFO  SpringContextShutdownHook org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor Shutting down ExecutorService 'scheduleJobExecutorService'
+2020-07-30 20:51:34 INFO  SpringContextShutdownHook org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor Shutting down ExecutorService 'febsAsyncThreadPool'
+2020-07-30 20:51:34 INFO  SpringContextShutdownHook org.springframework.scheduling.quartz.SchedulerFactoryBean Shutting down Quartz Scheduler
+2020-07-30 20:51:34 INFO  SpringContextShutdownHook org.quartz.core.QuartzScheduler Scheduler FEBS_Scheduler_$_DESKTOP-PHMKGBV1596112749741 shutting down.
+2020-07-30 20:51:34 INFO  SpringContextShutdownHook org.quartz.core.QuartzScheduler Scheduler FEBS_Scheduler_$_DESKTOP-PHMKGBV1596112749741 paused.
+2020-07-30 20:51:34 INFO  SpringContextShutdownHook org.quartz.core.QuartzScheduler Scheduler FEBS_Scheduler_$_DESKTOP-PHMKGBV1596112749741 shutdown complete.
+2020-07-30 20:51:34 INFO  SpringContextShutdownHook com.baomidou.dynamic.datasource.DynamicRoutingDataSource dynamic-datasource start closing ....
+2020-07-30 20:51:34 INFO  SpringContextShutdownHook com.zaxxer.hikari.HikariDataSource quartz - Shutdown initiated...
+2020-07-30 20:51:34 INFO  SpringContextShutdownHook com.zaxxer.hikari.HikariDataSource quartz - Shutdown completed.
+2020-07-30 20:51:34 INFO  SpringContextShutdownHook com.zaxxer.hikari.HikariDataSource base - Shutdown initiated...
+2020-07-30 20:51:34 INFO  SpringContextShutdownHook com.zaxxer.hikari.HikariDataSource base - Shutdown completed.
+2020-07-30 20:51:34 INFO  SpringContextShutdownHook com.baomidou.dynamic.datasource.DynamicRoutingDataSource dynamic-datasource all closed success,bye
+2020-07-30 20:53:09 INFO  main cc.mrbird.febs.FebsShiroApplication Starting FebsShiroApplication v2.0 on DESKTOP-PHMKGBV with PID 47316 (E:\myproject\VSMS-2.0\target\VSMS-2.0.jar started by 94119 in E:\myproject\VSMS-2.0\target)
+2020-07-30 20:53:09 INFO  main cc.mrbird.febs.FebsShiroApplication The following profiles are active: dev
+2020-07-30 20:53:10 INFO  main org.springframework.data.repository.config.RepositoryConfigurationDelegate Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-07-30 20:53:10 INFO  main org.springframework.data.repository.config.RepositoryConfigurationDelegate Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 20:53:10 INFO  main org.springframework.data.repository.config.RepositoryConfigurationDelegate Finished Spring Data repository scanning in 36ms. Found 0 Redis repository interfaces.
+2020-07-30 20:53:11 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'spring.datasource.dynamic-com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties' of type [com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:11 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceAutoConfiguration' of type [com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceAutoConfiguration$$EnhancerBySpringCGLIB$$4a67371a] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:11 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'dsProcessor' of type [com.baomidou.dynamic.datasource.processor.DsHeaderProcessor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:11 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'dynamicDatasourceAnnotationAdvisor' of type [com.baomidou.dynamic.datasource.aop.DynamicDataSourceAnnotationAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:12 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'febsProperties' of type [cc.mrbird.febs.common.properties.FebsProperties$$EnhancerBySpringCGLIB$$4b9fe5c5] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:12 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'shiroConfig' of type [cc.mrbird.febs.common.authentication.ShiroConfig$$EnhancerBySpringCGLIB$$4c58c7f2] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:12 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'mybatis-plus-com.baomidou.mybatisplus.autoconfigure.MybatisPlusProperties' of type [com.baomidou.mybatisplus.autoconfigure.MybatisPlusProperties] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:12 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'mybatisPlusConfigure' of type [cc.mrbird.febs.common.configure.MybatisPlusConfigure$$EnhancerBySpringCGLIB$$48366c76] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:12 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'dataPermissionInterceptor' of type [cc.mrbird.febs.common.interceptor.DataPermissionInterceptor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:12 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'desensitizationInterceptor' of type [cc.mrbird.febs.common.interceptor.DesensitizationInterceptor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:12 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'paginationInterceptor' of type [com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:12 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'com.baomidou.mybatisplus.autoconfigure.MybatisPlusAutoConfiguration' of type [com.baomidou.mybatisplus.autoconfigure.MybatisPlusAutoConfiguration$$EnhancerBySpringCGLIB$$1ea132e3] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:12 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'dataSourceCreator' of type [com.baomidou.dynamic.datasource.creator.DataSourceCreator] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:12 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'dynamicDataSourceProvider' of type [com.baomidou.dynamic.datasource.provider.YmlDynamicDataSourceProvider] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:12 INFO  main com.baomidou.dynamic.datasource.DynamicRoutingDataSource dynamic-datasource detect P6SPY plugin and enabled it
+2020-07-30 20:53:12 INFO  main com.zaxxer.hikari.HikariDataSource base - Starting...
+2020-07-30 20:53:13 INFO  main com.zaxxer.hikari.HikariDataSource base - Start completed.
+2020-07-30 20:53:13 INFO  main com.zaxxer.hikari.HikariDataSource quartz - Starting...
+2020-07-30 20:53:13 INFO  main com.zaxxer.hikari.HikariDataSource quartz - Start completed.
+2020-07-30 20:53:13 INFO  main com.baomidou.dynamic.datasource.DynamicRoutingDataSource dynamic-datasource [quartz] wrap p6spy plugin
+2020-07-30 20:53:13 INFO  main com.baomidou.dynamic.datasource.DynamicRoutingDataSource dynamic-datasource - load a datasource named [quartz] success
+2020-07-30 20:53:13 INFO  main com.baomidou.dynamic.datasource.DynamicRoutingDataSource dynamic-datasource [base] wrap p6spy plugin
+2020-07-30 20:53:13 INFO  main com.baomidou.dynamic.datasource.DynamicRoutingDataSource dynamic-datasource - load a datasource named [base] success
+2020-07-30 20:53:13 INFO  main com.baomidou.dynamic.datasource.DynamicRoutingDataSource dynamic-datasource initial loaded [2] datasource,primary datasource named [base]
+2020-07-30 20:53:13 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'dataSource' of type [com.baomidou.dynamic.datasource.DynamicRoutingDataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:13 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'spring.datasource-org.springframework.boot.autoconfigure.jdbc.DataSourceProperties' of type [org.springframework.boot.autoconfigure.jdbc.DataSourceProperties] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:13 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'org.springframework.boot.autoconfigure.jdbc.DataSourceInitializerInvoker' of type [org.springframework.boot.autoconfigure.jdbc.DataSourceInitializerInvoker] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:14 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'sqlSessionFactory' of type [org.apache.ibatis.session.defaults.DefaultSqlSessionFactory] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:14 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'sqlSessionTemplate' of type [org.mybatis.spring.SqlSessionTemplate] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:14 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'userDataPermissionMapper' of type [org.mybatis.spring.mapper.MapperFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:14 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'userDataPermissionMapper' of type [com.sun.proxy.$Proxy119] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:14 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'userDataPermissionService' of type [cc.mrbird.febs.system.service.impl.UserDataPermissionServiceImpl] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:15 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'roleMenuMapper' of type [org.mybatis.spring.mapper.MapperFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:15 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'roleMenuMapper' of type [com.sun.proxy.$Proxy121] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:15 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'roleMenuServiceImpl' of type [cc.mrbird.febs.system.service.impl.RoleMenuServiceImpl] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:15 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'userRoleMapper' of type [org.mybatis.spring.mapper.MapperFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:15 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'userRoleMapper' of type [com.sun.proxy.$Proxy123] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:15 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'userRoleServiceImpl' of type [cc.mrbird.febs.system.service.impl.UserRoleServiceImpl] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:15 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'roleMapper' of type [org.mybatis.spring.mapper.MapperFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:15 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'roleMapper' of type [com.sun.proxy.$Proxy125] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:15 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'roleServiceImpl' of type [cc.mrbird.febs.system.service.impl.RoleServiceImpl] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:15 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'userMapper' of type [org.mybatis.spring.mapper.MapperFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:15 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'userMapper' of type [com.sun.proxy.$Proxy127] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:15 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'userServiceImpl' of type [cc.mrbird.febs.system.service.impl.UserServiceImpl] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:15 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'menuMapper' of type [org.mybatis.spring.mapper.MapperFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:15 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'menuMapper' of type [com.sun.proxy.$Proxy130] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:15 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'menuServiceImpl' of type [cc.mrbird.febs.system.service.impl.MenuServiceImpl] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:15 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'shiroRealm' of type [cc.mrbird.febs.common.authentication.ShiroRealm] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:15 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'redisSessionDAO' of type [org.crazycake.shiro.RedisSessionDAO] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:15 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'sessionManager' of type [org.apache.shiro.web.session.mgt.DefaultWebSessionManager] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:15 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'securityManager' of type [org.apache.shiro.web.mgt.DefaultWebSecurityManager] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:15 INFO  main org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker Bean 'authorizationAttributeSourceAdvisor' of type [org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-30 20:53:15 INFO  main org.springframework.boot.web.embedded.tomcat.TomcatWebServer Tomcat initialized with port(s): 8080 (http)
+2020-07-30 20:53:15 INFO  main org.apache.coyote.http11.Http11NioProtocol Initializing ProtocolHandler ["http-nio-8080"]
+2020-07-30 20:53:15 INFO  main org.apache.catalina.core.StandardService Starting service [Tomcat]
+2020-07-30 20:53:15 INFO  main org.apache.catalina.core.StandardEngine Starting Servlet engine: [Apache Tomcat/9.0.31]
+2020-07-30 20:53:15 INFO  main org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] Initializing Spring embedded WebApplicationContext
+2020-07-30 20:53:15 INFO  main org.springframework.web.context.ContextLoader Root WebApplicationContext: initialization completed in 6485 ms
+2020-07-30 20:53:16 INFO  main cc.mrbird.febs.common.xss.XssFilter ------------ xss filter init ------------
+2020-07-30 20:53:17 INFO  main org.quartz.impl.StdSchedulerFactory Using default implementation for ThreadExecutor
+2020-07-30 20:53:17 INFO  main org.quartz.core.SchedulerSignalerImpl Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+2020-07-30 20:53:17 INFO  main org.quartz.core.QuartzScheduler Quartz Scheduler v.2.3.2 created.
+2020-07-30 20:53:17 INFO  main org.springframework.scheduling.quartz.LocalDataSourceJobStore Using db table-based data access locking (synchronization).
+2020-07-30 20:53:17 INFO  main org.springframework.scheduling.quartz.LocalDataSourceJobStore JobStoreCMT initialized.
+2020-07-30 20:53:17 INFO  main org.quartz.core.QuartzScheduler Scheduler meta-data: Quartz Scheduler (v2.3.2) 'FEBS_Scheduler' with instanceId 'DESKTOP-PHMKGBV1596113597647'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 20 threads.
+  Using job-store 'org.springframework.scheduling.quartz.LocalDataSourceJobStore' - which supports persistence. and is clustered.
+
+2020-07-30 20:53:17 INFO  main org.quartz.impl.StdSchedulerFactory Quartz scheduler 'FEBS_Scheduler' initialized from an externally provided properties instance.
+2020-07-30 20:53:17 INFO  main org.quartz.impl.StdSchedulerFactory Quartz scheduler version: 2.3.2
+2020-07-30 20:53:17 INFO  main org.quartz.core.QuartzScheduler JobFactory set to: org.springframework.scheduling.quartz.AdaptableJobFactory@72f9f27c
+2020-07-30 20:53:17 INFO  main p6spy 2020-07-30 20:53:17 | ºÄÊ± 10 ms | SQL Óï¾ä£º
+SELECT job_id jobId, bean_name beanName, method_name methodName, params, cron_expression cronExpression, status, remark, create_time createTime FROM t_job ORDER BY job_id;
+2020-07-30 20:53:19 INFO  main org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-07-30 20:53:19 INFO  main springfox.documentation.spring.web.PropertySourcedRequestMappingHandlerMapping Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2020-07-30 20:53:19 INFO  main org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor Initializing ExecutorService
+2020-07-30 20:53:19 INFO  main org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor Initializing ExecutorService 'febsAsyncThreadPool'
+2020-07-30 20:53:19 INFO  main org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor Initializing ExecutorService
+2020-07-30 20:53:19 INFO  main org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor Initializing ExecutorService 'scheduleJobExecutorService'
+2020-07-30 20:53:19 INFO  main org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping Adding welcome page template: index
+2020-07-30 20:53:20 INFO  main springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper Context refreshed
+2020-07-30 20:53:20 INFO  main springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper Found 1 custom documentation plugin(s)
+2020-07-30 20:53:20 INFO  main springfox.documentation.spring.web.scanners.ApiListingReferenceScanner Scanning for api listing references
+2020-07-30 20:53:20 INFO  main springfox.documentation.spring.web.readers.operation.CachingOperationNameGenerator Generating unique operation named: getDeptTreeUsingGET_1
+2020-07-30 20:53:20 INFO  main springfox.documentation.spring.web.readers.operation.CachingOperationNameGenerator Generating unique operation named: exportUsingGET_1
+2020-07-30 20:53:20 INFO  main springfox.documentation.spring.web.readers.operation.CachingOperationNameGenerator Generating unique operation named: exportUsingGET_2
+2020-07-30 20:53:20 INFO  main springfox.documentation.spring.web.readers.operation.CachingOperationNameGenerator Generating unique operation named: exportUsingGET_3
+2020-07-30 20:53:20 INFO  main springfox.documentation.spring.web.readers.operation.CachingOperationNameGenerator Generating unique operation named: exportUsingGET_4
+2020-07-30 20:53:20 INFO  main springfox.documentation.spring.web.readers.operation.CachingOperationNameGenerator Generating unique operation named: exportUsingGET_5
+2020-07-30 20:53:20 INFO  main springfox.documentation.spring.web.readers.operation.CachingOperationNameGenerator Generating unique operation named: exportUsingGET_6
+2020-07-30 20:53:20 INFO  main springfox.documentation.spring.web.readers.operation.CachingOperationNameGenerator Generating unique operation named: exportUsingGET_7
+2020-07-30 20:53:20 INFO  main springfox.documentation.spring.web.readers.operation.CachingOperationNameGenerator Generating unique operation named: exportUsingGET_8
+2020-07-30 20:53:20 INFO  main springfox.documentation.spring.web.readers.operation.CachingOperationNameGenerator Generating unique operation named: logUsingGET_1
+2020-07-30 20:53:20 INFO  main springfox.documentation.spring.web.readers.operation.CachingOperationNameGenerator Generating unique operation named: onlineUsingGET_1
+2020-07-30 20:53:21 INFO  main springfox.documentation.spring.web.readers.operation.CachingOperationNameGenerator Generating unique operation named: indexUsingGET_1
+2020-07-30 20:53:21 INFO  main org.springframework.scheduling.quartz.SchedulerFactoryBean Will start Quartz Scheduler [FEBS_Scheduler] in 1 seconds
+2020-07-30 20:53:21 INFO  main org.apache.coyote.http11.Http11NioProtocol Starting ProtocolHandler ["http-nio-8080"]
+2020-07-30 20:53:21 INFO  main org.springframework.boot.web.embedded.tomcat.TomcatWebServer Tomcat started on port(s): 8080 (http) with context path ''
+2020-07-30 20:53:21 INFO  main cc.mrbird.febs.FebsShiroApplication Started FebsShiroApplication in 12.911 seconds (JVM running for 13.381)
+2020-07-30 20:53:21 INFO  main io.lettuce.core.EpollProvider Starting without optional epoll library
+2020-07-30 20:53:21 INFO  main io.lettuce.core.KqueueProvider Starting without optional kqueue library
+2020-07-30 20:53:22 INFO  Quartz Scheduler [FEBS_Scheduler] org.springframework.scheduling.quartz.SchedulerFactoryBean Starting Quartz Scheduler now, after delay of 1 seconds
+2020-07-30 20:53:22 INFO  Quartz Scheduler [FEBS_Scheduler] org.springframework.scheduling.quartz.LocalDataSourceJobStore ClusterManager: detected 1 failed or restarted instances.
+2020-07-30 20:53:22 INFO  Quartz Scheduler [FEBS_Scheduler] org.springframework.scheduling.quartz.LocalDataSourceJobStore ClusterManager: Scanning for instance "DESKTOP-PHMKGBV1596112749741"'s failed in-progress jobs.
+2020-07-30 20:53:22 INFO  Quartz Scheduler [FEBS_Scheduler] org.quartz.core.QuartzScheduler Scheduler FEBS_Scheduler_$_DESKTOP-PHMKGBV1596113597647 started.
+2020-07-30 20:53:22 INFO  main cc.mrbird.febs.common.runner.FebsStartedUpRunner  __    ___   _      ___   _     ____ _____  ____ 
+2020-07-30 20:53:22 INFO  main cc.mrbird.febs.common.runner.FebsStartedUpRunner / /`  / / \ | |\/| | |_) | |   | |_   | |  | |_  
+2020-07-30 20:53:22 INFO  main cc.mrbird.febs.common.runner.FebsStartedUpRunner \_\_, \_\_/ |_|  | |_|   |_|__ |_|__  |_|  |_|__ 
+2020-07-30 20:53:22 INFO  main cc.mrbird.febs.common.runner.FebsStartedUpRunner                                                       
+2020-07-30 20:53:22 INFO  main cc.mrbird.febs.common.runner.FebsStartedUpRunner ÏµÍ³Æô¶¯Íê±Ï£¬µØÖ·£ºhttp://192.168.137.1:8080/login
+2020-07-30 20:53:22 INFO  http-nio-8080-exec-2 org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 20:53:22 INFO  http-nio-8080-exec-2 org.springframework.web.servlet.DispatcherServlet Initializing Servlet 'dispatcherServlet'
+2020-07-30 20:53:22 INFO  http-nio-8080-exec-2 org.springframework.web.servlet.DispatcherServlet Completed initialization in 39 ms
+2020-07-30 20:53:22 INFO  http-nio-8080-exec-2 org.apache.shiro.session.mgt.AbstractValidatingSessionManager Enabling session validation scheduler...
+2020-07-30 20:53:24 INFO  http-nio-8080-exec-1 cc.mrbird.febs.common.aspect.LimitAspect IP:192.168.137.1 µÚ 1 ´Î·ÃÎÊkeyÎª [limit_get_captcha192.168.137.1]£¬ÃèÊöÎª [»ñÈ¡ÑéÖ¤Âë] µÄ½Ó¿Ú
+2020-07-30 20:53:27 INFO  http-nio-8080-exec-3 p6spy 2020-07-30 20:53:27 | ºÄÊ± 15 ms | SQL Óï¾ä£º
+SELECT r.* FROM t_role r LEFT JOIN t_user_role ur ON (r.role_id = ur.role_id) LEFT JOIN t_user u ON (u.user_id = ur.user_id) WHERE u.username = 'MrBird';
+2020-07-30 20:53:27 INFO  http-nio-8080-exec-3 p6spy 2020-07-30 20:53:27 | ºÄÊ± 3 ms | SQL Óï¾ä£º
+SELECT m.perms FROM t_role r LEFT JOIN t_user_role ur ON (r.role_id = ur.role_id) LEFT JOIN t_user u ON (u.user_id = ur.user_id) LEFT JOIN t_role_menu rm ON (rm.role_id = r.role_id) LEFT JOIN t_menu m ON (m.menu_id = rm.menu_id) WHERE u.username = 'MrBird' AND m.perms IS NOT NULL AND m.perms <> '';
+2020-07-30 20:53:27 INFO  http-nio-8080-exec-3 p6spy 2020-07-30 20:53:27 | ºÄÊ± 2 ms | SQL Óï¾ä£º
+SELECT u.user_id userId, u.username, u.email, u.mobile, u.password, u.status, u.create_time createTime, u.ssex sex, u.dept_id deptId, u.last_login_time lastLoginTime, u.modify_time modifyTime, u.description, u.avatar, u.theme, u.is_tab isTab, d.dept_name deptName, GROUP_CONCAT(r.role_id) roleId, GROUP_CONCAT(r.ROLE_NAME) roleName FROM t_user u LEFT JOIN t_dept d ON (u.dept_id = d.dept_id) LEFT JOIN t_user_role ur ON (u.user_id = ur.user_id) LEFT JOIN t_role r ON r.role_id = ur.role_id WHERE u.username = 'MrBird' GROUP BY u.username, u.user_id, u.email, u.mobile, u.password, u.status, u.create_time, u.ssex, u.dept_id, u.last_login_time, u.modify_time, u.description, u.avatar, u.theme, u.is_tab;
+2020-07-30 20:53:28 INFO  http-nio-8080-exec-5 p6spy 2020-07-30 20:53:28 | ºÄÊ± 5 ms | SQL Óï¾ä£º
+SELECT m.* FROM t_menu m WHERE m.type <> 1 AND m.MENU_ID IN (SELECT DISTINCT rm.menu_id FROM t_role_menu rm LEFT JOIN t_role r ON (rm.role_id = r.role_id) LEFT JOIN t_user_role ur ON (ur.role_id = r.role_id) LEFT JOIN t_user u ON (u.user_id = ur.user_id) WHERE u.username = 'MrBird') ORDER BY m.order_num;
+2020-07-30 20:53:29 INFO  http-nio-8080-exec-10 p6spy 2020-07-30 20:53:29 | ºÄÊ± 0 ms | SQL Óï¾ä£º
+SELECT count(1) FROM t_login_log;
+2020-07-30 20:53:29 INFO  http-nio-8080-exec-10 p6spy 2020-07-30 20:53:29 | ºÄÊ± 4 ms | SQL Óï¾ä£º
+SELECT count(1) FROM t_login_log WHERE login_time BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 1 DAY);
+2020-07-30 20:53:29 INFO  http-nio-8080-exec-10 p6spy 2020-07-30 20:53:29 | ºÄÊ± 0 ms | SQL Óï¾ä£º
+SELECT count(DISTINCT (ip)) FROM t_login_log WHERE login_time BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 1 DAY);
+2020-07-30 20:53:29 INFO  http-nio-8080-exec-10 p6spy 2020-07-30 20:53:29 | ºÄÊ± 1 ms | SQL Óï¾ä£º
+SELECT date_format(l.login_time, '%m-%d') days, count(1) count FROM (SELECT * FROM t_login_log WHERE date_sub(curdate(), INTERVAL 10 day) <= date(login_time)) AS l WHERE 1 = 1 GROUP BY days;
+2020-07-30 20:53:29 INFO  http-nio-8080-exec-10 p6spy 2020-07-30 20:53:29 | ºÄÊ± 1 ms | SQL Óï¾ä£º
+SELECT date_format(l.login_time, '%m-%d') days, count(1) count FROM (SELECT * FROM t_login_log WHERE date_sub(curdate(), INTERVAL 10 day) <= date(login_time)) AS l WHERE 1 = 1 AND l.username = 'MrBird' GROUP BY days;
+2020-07-30 20:53:29 INFO  Febs-Async-Thread1 p6spy 2020-07-30 20:53:29 | ºÄÊ± 14 ms | SQL Óï¾ä£º
+UPDATE t_user SET LAST_LOGIN_TIME = '2020-07-30T20:53:28.997+0800' WHERE (USERNAME = 'MrBird');
+2020-07-30 20:53:34 INFO  http-nio-8080-exec-8 p6spy 2020-07-30 20:53:34 | ºÄÊ± 0 ms | SQL Óï¾ä£º
+SELECT r.* FROM t_role r LEFT JOIN t_user_role ur ON (r.role_id = ur.role_id) LEFT JOIN t_user u ON (u.user_id = ur.user_id) WHERE u.username = 'MrBird';
+2020-07-30 20:53:34 INFO  http-nio-8080-exec-8 p6spy 2020-07-30 20:53:34 | ºÄÊ± 1 ms | SQL Óï¾ä£º
+SELECT m.perms FROM t_role r LEFT JOIN t_user_role ur ON (r.role_id = ur.role_id) LEFT JOIN t_user u ON (u.user_id = ur.user_id) LEFT JOIN t_role_menu rm ON (rm.role_id = r.role_id) LEFT JOIN t_menu m ON (m.menu_id = rm.menu_id) WHERE u.username = 'MrBird' AND m.perms IS NOT NULL AND m.perms <> '';
+2020-07-30 21:39:00 INFO  http-nio-8080-exec-4 p6spy 2020-07-30 21:39:00 | ºÄÊ± 4 ms | SQL Óï¾ä£º
+SELECT r.* FROM t_role r LEFT JOIN t_user_role ur ON (r.role_id = ur.role_id) LEFT JOIN t_user u ON (u.user_id = ur.user_id) WHERE u.username = 'MrBird';
+2020-07-30 21:39:00 INFO  http-nio-8080-exec-4 p6spy 2020-07-30 21:39:00 | ºÄÊ± 5 ms | SQL Óï¾ä£º
+SELECT m.perms FROM t_role r LEFT JOIN t_user_role ur ON (r.role_id = ur.role_id) LEFT JOIN t_user u ON (u.user_id = ur.user_id) LEFT JOIN t_role_menu rm ON (rm.role_id = r.role_id) LEFT JOIN t_menu m ON (m.menu_id = rm.menu_id) WHERE u.username = 'MrBird' AND m.perms IS NOT NULL AND m.perms <> '';
+2020-07-30 21:39:00 INFO  http-nio-8080-exec-4 p6spy 2020-07-30 21:39:00 | ºÄÊ± 4 ms | SQL Óï¾ä£º
+SELECT u.user_id userId, u.username, u.email, u.mobile, u.password, u.status, u.create_time createTime, u.ssex sex, u.dept_id deptId, u.last_login_time lastLoginTime, u.modify_time modifyTime, u.description, u.avatar, u.theme, u.is_tab isTab, d.dept_name deptName, GROUP_CONCAT(r.role_id) roleId, GROUP_CONCAT(r.ROLE_NAME) roleName FROM t_user u LEFT JOIN t_dept d ON (u.dept_id = d.dept_id) LEFT JOIN t_user_role ur ON (u.user_id = ur.user_id) LEFT JOIN t_role r ON r.role_id = ur.role_id WHERE u.username = 'MrBird' GROUP BY u.username, u.user_id, u.email, u.mobile, u.password, u.status, u.create_time, u.ssex, u.dept_id, u.last_login_time, u.modify_time, u.description, u.avatar, u.theme, u.is_tab;
+2020-07-30 21:39:01 INFO  http-nio-8080-exec-5 p6spy 2020-07-30 21:39:01 | ºÄÊ± 1 ms | SQL Óï¾ä£º
+SELECT m.* FROM t_menu m WHERE m.type <> 1 AND m.MENU_ID IN (SELECT DISTINCT rm.menu_id FROM t_role_menu rm LEFT JOIN t_role r ON (rm.role_id = r.role_id) LEFT JOIN t_user_role ur ON (ur.role_id = r.role_id) LEFT JOIN t_user u ON (u.user_id = ur.user_id) WHERE u.username = 'MrBird') ORDER BY m.order_num;
+2020-07-30 21:39:01 INFO  http-nio-8080-exec-10 p6spy 2020-07-30 21:39:01 | ºÄÊ± 1 ms | SQL Óï¾ä£º
+SELECT r.* FROM t_role r LEFT JOIN t_user_role ur ON (r.role_id = ur.role_id) LEFT JOIN t_user u ON (u.user_id = ur.user_id) WHERE u.username = 'MrBird';
+2020-07-30 21:39:01 INFO  http-nio-8080-exec-10 p6spy 2020-07-30 21:39:01 | ºÄÊ± 1 ms | SQL Óï¾ä£º
+SELECT m.perms FROM t_role r LEFT JOIN t_user_role ur ON (r.role_id = ur.role_id) LEFT JOIN t_user u ON (u.user_id = ur.user_id) LEFT JOIN t_role_menu rm ON (rm.role_id = r.role_id) LEFT JOIN t_menu m ON (m.menu_id = rm.menu_id) WHERE u.username = 'MrBird' AND m.perms IS NOT NULL AND m.perms <> '';
+2020-07-30 21:53:22 INFO  SessionValidationThread-1 org.apache.shiro.session.mgt.AbstractValidatingSessionManager Validating all active sessions...
+2020-07-30 21:53:22 INFO  SessionValidationThread-1 org.apache.shiro.session.mgt.AbstractValidatingSessionManager Finished session validation.  No sessions were stopped.
+2020-07-30 22:53:10 INFO  http-nio-8080-exec-5 cc.mrbird.febs.common.aspect.LimitAspect IP:192.168.137.1 µÚ 1 ´Î·ÃÎÊkeyÎª [limit_get_captcha192.168.137.1]£¬ÃèÊöÎª [»ñÈ¡ÑéÖ¤Âë] µÄ½Ó¿Ú
+2020-07-30 22:53:22 INFO  http-nio-8080-exec-10 cc.mrbird.febs.common.aspect.LimitAspect IP:192.168.137.1 µÚ 1 ´Î·ÃÎÊkeyÎª [limit_login192.168.137.1]£¬ÃèÊöÎª [µÇÂ¼½Ó¿Ú] µÄ½Ó¿Ú
+2020-07-30 22:53:22 INFO  http-nio-8080-exec-10 p6spy 2020-07-30 22:53:22 | ºÄÊ± 7 ms | SQL Óï¾ä£º
+SELECT u.user_id userId, u.username, u.email, u.mobile, u.password, u.status, u.create_time createTime, u.ssex sex, u.dept_id deptId, u.last_login_time lastLoginTime, u.modify_time modifyTime, u.description, u.avatar, u.theme, u.is_tab isTab, d.dept_name deptName, GROUP_CONCAT(r.role_id) roleId, GROUP_CONCAT(r.ROLE_NAME) roleName FROM t_user u LEFT JOIN t_dept d ON (u.dept_id = d.dept_id) LEFT JOIN t_user_role ur ON (u.user_id = ur.user_id) LEFT JOIN t_role r ON r.role_id = ur.role_id WHERE u.username = 'mrbird' GROUP BY u.username, u.user_id, u.email, u.mobile, u.password, u.status, u.create_time, u.ssex, u.dept_id, u.last_login_time, u.modify_time, u.description, u.avatar, u.theme, u.is_tab;
+2020-07-30 22:53:22 INFO  http-nio-8080-exec-10 p6spy 2020-07-30 22:53:22 | ºÄÊ± 1 ms | SQL Óï¾ä£º
+SELECT USER_ID, dept_id FROM t_user_data_permission WHERE (USER_ID = '1');
+2020-07-30 22:53:22 INFO  http-nio-8080-exec-10 p6spy 2020-07-30 22:53:22 | ºÄÊ± 10 ms | SQL Óï¾ä£º
+INSERT INTO t_login_log (USERNAME, LOGIN_TIME, LOCATION, IP, `SYSTEM`, BROWSER) VALUES ('mrbird', '2020-07-30T22:53:22.670+0800', 'ÄÚÍøIP|0|0|ÄÚÍøIP|ÄÚÍøIP', '192.168.137.1', 'Windows 10', 'Chrome 84');
+2020-07-30 22:53:22 INFO  http-nio-8080-exec-8 p6spy 2020-07-30 22:53:22 | ºÄÊ± 0 ms | SQL Óï¾ä£º
+SELECT r.* FROM t_role r LEFT JOIN t_user_role ur ON (r.role_id = ur.role_id) LEFT JOIN t_user u ON (u.user_id = ur.user_id) WHERE u.username = 'MrBird';
+2020-07-30 22:53:22 INFO  http-nio-8080-exec-8 p6spy 2020-07-30 22:53:22 | ºÄÊ± 6 ms | SQL Óï¾ä£º
+SELECT m.perms FROM t_role r LEFT JOIN t_user_role ur ON (r.role_id = ur.role_id) LEFT JOIN t_user u ON (u.user_id = ur.user_id) LEFT JOIN t_role_menu rm ON (rm.role_id = r.role_id) LEFT JOIN t_menu m ON (m.menu_id = rm.menu_id) WHERE u.username = 'MrBird' AND m.perms IS NOT NULL AND m.perms <> '';
+2020-07-30 22:53:22 INFO  http-nio-8080-exec-8 p6spy 2020-07-30 22:53:22 | ºÄÊ± 0 ms | SQL Óï¾ä£º
+SELECT u.user_id userId, u.username, u.email, u.mobile, u.password, u.status, u.create_time createTime, u.ssex sex, u.dept_id deptId, u.last_login_time lastLoginTime, u.modify_time modifyTime, u.description, u.avatar, u.theme, u.is_tab isTab, d.dept_name deptName, GROUP_CONCAT(r.role_id) roleId, GROUP_CONCAT(r.ROLE_NAME) roleName FROM t_user u LEFT JOIN t_dept d ON (u.dept_id = d.dept_id) LEFT JOIN t_user_role ur ON (u.user_id = ur.user_id) LEFT JOIN t_role r ON r.role_id = ur.role_id WHERE u.username = 'MrBird' GROUP BY u.username, u.user_id, u.email, u.mobile, u.password, u.status, u.create_time, u.ssex, u.dept_id, u.last_login_time, u.modify_time, u.description, u.avatar, u.theme, u.is_tab;
+2020-07-30 22:53:22 INFO  SessionValidationThread-1 org.apache.shiro.session.mgt.AbstractValidatingSessionManager Validating all active sessions...
+2020-07-30 22:53:22 INFO  SessionValidationThread-1 org.apache.shiro.session.mgt.AbstractValidatingSessionManager Finished session validation.  No sessions were stopped.
+2020-07-30 22:53:23 INFO  http-nio-8080-exec-3 p6spy 2020-07-30 22:53:23 | ºÄÊ± 1 ms | SQL Óï¾ä£º
+SELECT m.* FROM t_menu m WHERE m.type <> 1 AND m.MENU_ID IN (SELECT DISTINCT rm.menu_id FROM t_role_menu rm LEFT JOIN t_role r ON (rm.role_id = r.role_id) LEFT JOIN t_user_role ur ON (ur.role_id = r.role_id) LEFT JOIN t_user u ON (u.user_id = ur.user_id) WHERE u.username = 'MrBird') ORDER BY m.order_num;
+2020-07-30 22:53:24 INFO  http-nio-8080-exec-4 p6spy 2020-07-30 22:53:24 | ºÄÊ± 0 ms | SQL Óï¾ä£º
+SELECT count(1) FROM t_login_log;
+2020-07-30 22:53:24 INFO  http-nio-8080-exec-4 p6spy 2020-07-30 22:53:24 | ºÄÊ± 0 ms | SQL Óï¾ä£º
+SELECT count(1) FROM t_login_log WHERE login_time BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 1 DAY);
+2020-07-30 22:53:24 INFO  http-nio-8080-exec-4 p6spy 2020-07-30 22:53:24 | ºÄÊ± 0 ms | SQL Óï¾ä£º
+SELECT count(DISTINCT (ip)) FROM t_login_log WHERE login_time BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 1 DAY);
+2020-07-30 22:53:24 INFO  http-nio-8080-exec-4 p6spy 2020-07-30 22:53:24 | ºÄÊ± 0 ms | SQL Óï¾ä£º
+SELECT date_format(l.login_time, '%m-%d') days, count(1) count FROM (SELECT * FROM t_login_log WHERE date_sub(curdate(), INTERVAL 10 day) <= date(login_time)) AS l WHERE 1 = 1 GROUP BY days;
+2020-07-30 22:53:24 INFO  Febs-Async-Thread2 p6spy 2020-07-30 22:53:24 | ºÄÊ± 11 ms | SQL Óï¾ä£º
+UPDATE t_user SET LAST_LOGIN_TIME = '2020-07-30T22:53:24.160+0800' WHERE (USERNAME = 'MrBird');
+2020-07-30 22:53:24 INFO  http-nio-8080-exec-4 p6spy 2020-07-30 22:53:24 | ºÄÊ± 2 ms | SQL Óï¾ä£º
+SELECT date_format(l.login_time, '%m-%d') days, count(1) count FROM (SELECT * FROM t_login_log WHERE date_sub(curdate(), INTERVAL 10 day) <= date(login_time)) AS l WHERE 1 = 1 AND l.username = 'MrBird' GROUP BY days;
+2020-07-30 22:53:26 INFO  http-nio-8080-exec-7 p6spy 2020-07-30 22:53:26 | ºÄÊ± 0 ms | SQL Óï¾ä£º
+SELECT r.* FROM t_role r LEFT JOIN t_user_role ur ON (r.role_id = ur.role_id) LEFT JOIN t_user u ON (u.user_id = ur.user_id) WHERE u.username = 'MrBird';
+2020-07-30 22:53:26 INFO  http-nio-8080-exec-7 p6spy 2020-07-30 22:53:26 | ºÄÊ± 4 ms | SQL Óï¾ä£º
+SELECT m.perms FROM t_role r LEFT JOIN t_user_role ur ON (r.role_id = ur.role_id) LEFT JOIN t_user u ON (u.user_id = ur.user_id) LEFT JOIN t_role_menu rm ON (rm.role_id = r.role_id) LEFT JOIN t_menu m ON (m.menu_id = rm.menu_id) WHERE u.username = 'MrBird' AND m.perms IS NOT NULL AND m.perms <> '';
+2020-07-30 22:53:26 INFO  http-nio-8080-exec-5 p6spy 2020-07-30 22:53:26 | ºÄÊ± 1 ms | SQL Óï¾ä£º
+SELECT u.user_id userId, u.username, u.email, u.mobile, u.password, u.status, u.create_time createTime, u.ssex sex, u.dept_id deptId, u.last_login_time lastLoginTime, u.modify_time modifyTime, u.description, u.avatar, u.theme, u.is_tab isTab, d.dept_name deptName, GROUP_CONCAT(r.role_id) roleId, GROUP_CONCAT(r.ROLE_NAME) roleName FROM t_user u LEFT JOIN t_dept d ON (u.dept_id = d.dept_id) LEFT JOIN t_user_role ur ON (u.user_id = ur.user_id) LEFT JOIN t_role r ON r.role_id = ur.role_id WHERE u.username = 'MrBird' GROUP BY u.username, u.user_id, u.email, u.mobile, u.password, u.status, u.create_time, u.ssex, u.dept_id, u.last_login_time, u.modify_time, u.description, u.avatar, u.theme, u.is_tab;
+2020-07-30 22:53:26 INFO  http-nio-8080-exec-5 p6spy 2020-07-30 22:53:26 | ºÄÊ± 15 ms | SQL Óï¾ä£º
+SELECT COUNT(1) FROM ordertable o WHERE 1 = 1;
+2020-07-30 22:53:26 INFO  http-nio-8080-exec-5 p6spy 2020-07-30 22:53:26 | ºÄÊ± 0 ms | SQL Óï¾ä£º
+SELECT o.order_id orderId, o.create_time createTime, o.sales_id salesId, o.customer_name customerName, o.customer_phone customerPhone, o.vehicle_id vehicleId, o.price, o.status FROM ordertable o WHERE 1 = 1 ORDER BY orderId ASC LIMIT 0,10;
+2020-07-30 22:55:27 INFO  http-nio-8080-exec-1 p6spy 2020-07-30 22:55:27 | ºÄÊ± 3 ms | SQL Óï¾ä£º
+SELECT COUNT(1) FROM vehicletable v WHERE 1 = 1;
+2020-07-30 22:55:27 INFO  http-nio-8080-exec-1 p6spy 2020-07-30 22:55:27 | ºÄÊ± 0 ms | SQL Óï¾ä£º
+SELECT v.vehicle_id vehicleId, v.type, v.color, v.dead_weight deadWeight, v.maintenance_times maintenanceTimes, v.lowest_price lowestPrice, v.manufacture_date manufactureDate, v.status FROM vehicletable v WHERE 1 = 1 ORDER BY vehicleId ASC LIMIT 0,10;
+2020-07-30 22:56:11 INFO  http-nio-8080-exec-6 p6spy 2020-07-30 22:56:11 | ºÄÊ± 4 ms | SQL Óï¾ä£º
+SELECT COUNT(1) FROM customertable c WHERE 1 = 1;
+2020-07-30 22:56:11 INFO  http-nio-8080-exec-6 p6spy 2020-07-30 22:56:11 | ºÄÊ± 0 ms | SQL Óï¾ä£º
+SELECT c.customer_id customerId, c.name, c.gender, c.phone, c.purchasing_date purchasingDate, c.vehicle_id vehicleId FROM customertable c WHERE 1 = 1 ORDER BY customerId ASC LIMIT 0,10;
+2020-07-30 23:07:10 INFO  http-nio-8080-exec-9 p6spy 2020-07-30 23:07:10 | ºÄÊ± 8 ms | SQL Óï¾ä£º
+SELECT COUNT(1) FROM t_role r WHERE 1 = 1;
+2020-07-30 23:07:10 INFO  http-nio-8080-exec-9 p6spy 2020-07-30 23:07:10 | ºÄÊ± 3 ms | SQL Óï¾ä£º
+SELECT r.role_id roleId, r.role_name roleName, r.remark, r.create_time createTime, r.modify_time modifyTime, GROUP_CONCAT(rm.menu_id) menuIds FROM t_role r LEFT JOIN t_role_menu rm ON (r.role_id = rm.role_id) WHERE 1 = 1 GROUP BY r.role_id ORDER BY createTime DESC LIMIT 0,10;
+2020-07-30 23:07:10 INFO  http-nio-8080-exec-5 p6spy 2020-07-30 23:07:10 | ºÄÊ± 8 ms | SQL Óï¾ä£º
+SELECT MENU_ID, PARENT_ID, MENU_NAME, URL, PERMS, ICON, TYPE, ORDER_NUM, CREATE_TIME, MODIFY_TIME FROM t_menu ORDER BY ORDER_NUM ASC;
+2020-07-30 23:37:34 INFO  http-nio-8080-exec-2 p6spy 2020-07-30 23:37:34 | ºÄÊ± 11 ms | SQL Óï¾ä£º
+SELECT r.* FROM t_role r LEFT JOIN t_user_role ur ON (r.role_id = ur.role_id) LEFT JOIN t_user u ON (u.user_id = ur.user_id) WHERE u.username = 'MrBird';
+2020-07-30 23:37:34 INFO  http-nio-8080-exec-2 p6spy 2020-07-30 23:37:34 | ºÄÊ± 3 ms | SQL Óï¾ä£º
+SELECT m.perms FROM t_role r LEFT JOIN t_user_role ur ON (r.role_id = ur.role_id) LEFT JOIN t_user u ON (u.user_id = ur.user_id) LEFT JOIN t_role_menu rm ON (rm.role_id = r.role_id) LEFT JOIN t_menu m ON (m.menu_id = rm.menu_id) WHERE u.username = 'MrBird' AND m.perms IS NOT NULL AND m.perms <> '';
+2020-07-30 23:37:35 INFO  http-nio-8080-exec-2 p6spy 2020-07-30 23:37:35 | ºÄÊ± 2 ms | SQL Óï¾ä£º
+SELECT u.user_id userId, u.username, u.email, u.mobile, u.password, u.status, u.create_time createTime, u.ssex sex, u.dept_id deptId, u.last_login_time lastLoginTime, u.modify_time modifyTime, u.description, u.avatar, u.theme, u.is_tab isTab, d.dept_name deptName, GROUP_CONCAT(r.role_id) roleId, GROUP_CONCAT(r.ROLE_NAME) roleName FROM t_user u LEFT JOIN t_dept d ON (u.dept_id = d.dept_id) LEFT JOIN t_user_role ur ON (u.user_id = ur.user_id) LEFT JOIN t_role r ON r.role_id = ur.role_id WHERE u.username = 'MrBird' GROUP BY u.username, u.user_id, u.email, u.mobile, u.password, u.status, u.create_time, u.ssex, u.dept_id, u.last_login_time, u.modify_time, u.description, u.avatar, u.theme, u.is_tab;
+2020-07-30 23:37:36 INFO  http-nio-8080-exec-4 p6spy 2020-07-30 23:37:36 | ºÄÊ± 1 ms | SQL Óï¾ä£º
+SELECT m.* FROM t_menu m WHERE m.type <> 1 AND m.MENU_ID IN (SELECT DISTINCT rm.menu_id FROM t_role_menu rm LEFT JOIN t_role r ON (rm.role_id = r.role_id) LEFT JOIN t_user_role ur ON (ur.role_id = r.role_id) LEFT JOIN t_user u ON (u.user_id = ur.user_id) WHERE u.username = 'MrBird') ORDER BY m.order_num;
+2020-07-30 23:37:36 INFO  http-nio-8080-exec-7 p6spy 2020-07-30 23:37:36 | ºÄÊ± 0 ms | SQL Óï¾ä£º
+SELECT r.* FROM t_role r LEFT JOIN t_user_role ur ON (r.role_id = ur.role_id) LEFT JOIN t_user u ON (u.user_id = ur.user_id) WHERE u.username = 'MrBird';
+2020-07-30 23:37:36 INFO  http-nio-8080-exec-7 p6spy 2020-07-30 23:37:36 | ºÄÊ± 1 ms | SQL Óï¾ä£º
+SELECT m.perms FROM t_role r LEFT JOIN t_user_role ur ON (r.role_id = ur.role_id) LEFT JOIN t_user u ON (u.user_id = ur.user_id) LEFT JOIN t_role_menu rm ON (rm.role_id = r.role_id) LEFT JOIN t_menu m ON (m.menu_id = rm.menu_id) WHERE u.username = 'MrBird' AND m.perms IS NOT NULL AND m.perms <> '';
+2020-07-30 23:37:36 INFO  http-nio-8080-exec-10 p6spy 2020-07-30 23:37:36 | ºÄÊ± 0 ms | SQL Óï¾ä£º
+SELECT MENU_ID, PARENT_ID, MENU_NAME, URL, PERMS, ICON, TYPE, ORDER_NUM, CREATE_TIME, MODIFY_TIME FROM t_menu ORDER BY ORDER_NUM ASC;
+2020-07-30 23:37:36 INFO  http-nio-8080-exec-5 p6spy 2020-07-30 23:37:36 | ºÄÊ± 84 ms | SQL Óï¾ä£º
+SELECT COUNT(1) FROM t_role r WHERE 1 = 1;
+2020-07-30 23:37:36 INFO  http-nio-8080-exec-5 p6spy 2020-07-30 23:37:36 | ºÄÊ± 1 ms | SQL Óï¾ä£º
+SELECT r.role_id roleId, r.role_name roleName, r.remark, r.create_time createTime, r.modify_time modifyTime, GROUP_CONCAT(rm.menu_id) menuIds FROM t_role r LEFT JOIN t_role_menu rm ON (r.role_id = rm.role_id) WHERE 1 = 1 GROUP BY r.role_id ORDER BY createTime DESC LIMIT 0,10;
+2020-07-30 23:53:22 INFO  SessionValidationThread-1 org.apache.shiro.session.mgt.AbstractValidatingSessionManager Validating all active sessions...
+2020-07-30 23:53:22 INFO  SessionValidationThread-1 org.apache.shiro.session.mgt.AbstractValidatingSessionManager Finished session validation.  No sessions were stopped.
